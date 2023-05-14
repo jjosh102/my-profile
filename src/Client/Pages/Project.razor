@@ -6,7 +6,7 @@
 @if (githubProjects.Count == 0)
 {
     <div class="d-flex justify-center flex-row flex-wrap gap-4">
-        @for (int i = 0; i < 4; i++)
+        @for (int i = 0; i < 5; i++)
         {
             <MudPaper Outlined="true" Style="width:400px">
                 <div class="mt-4">
@@ -57,7 +57,7 @@ else
 @code {
     private List<GithubRepoInfo> githubProjects = new();
     //Todo: Check github api document if this can be queried instead.
-    private List<string> currentRepos = new List<string> { "ObakiSite", "Obaki.LocalStorageCache", "Obaki.DataChecker", "MyProfile" };
+    private List<string> currentRepos = new List<string> { "ObakiSite", "Obaki.LocalStorageCache", "Obaki.DataChecker","Obaki.XmlSpecialCharacterEscaper" ,"MyProfile" };
     protected override async Task OnInitializedAsync()
     {
         //Todo: Save data  in local storage to minimize API calls?
