@@ -30,12 +30,6 @@
                 <MudAppBar Elevation="0" Bottom="true">
                     <MudContainer MaxWidth="MaxWidth.Medium">
                         <MudDivider Class="mb-4" />
-                        @if (githubRepo is null && githubLastCommit is null)
-                        {
-                            <MudSkeleton Width="80%" Animation="Animation.Wave" />
-                        }
-                        else
-                        {
                             <MudStack Row="true">
                                 <MudText Typo="Typo.subtitle2">© joshuajpiluden @DateTime.Now.Year</MudText>
                                 <MudSpacer />
@@ -48,7 +42,6 @@
                                     <MudImage Src="https://github.com/obaki102/MyProfile/workflows/Deploy%20my%20profile/badge.svg" Elevation="25" />
                                 </MudTooltip>
                             </MudStack>
-                        }
                     </MudContainer>
                 </MudAppBar>
             </MudHidden>
@@ -59,31 +52,12 @@
 @code {
     private MudTheme _theme = DefaultTheme.Init();
     private bool _isDarkMode = true;
-
-    private GithubRepoInfo? githubRepo;
     private GithubLastCommit? githubLastCommit;
     private string lastDayUpdated = string.Empty;
     private string lastCommitUrl = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        //Todo: Save data  in local storage to minimize API calls?
-        var repoInfoResult = await Mediatr.Send(new GetRepoInfo("obaki102", "ObakiSite"));
-        if (repoInfoResult.IsSuccess && repoInfoResult.Value is not null)
-        {
-            githubRepo = repoInfoResult.Value;
-            var daysPassed = DateTime.UtcNow - githubRepo.PushedAt.ToUniversalTime();
-            lastDayUpdated = daysPassed.Days switch
-            {
-                0 => "This site was recently updated today",
-                1 => "This site was last updated yesterday",
-                _ => $"This site was last updated {daysPassed.Days} days ago"
-            };
-        }
-        else
-        {
-            Snackbar.Add("Sorry, unable to connect to Github API.", Severity.Error);
-        }
         var lastCommitResult = await Mediatr.Send(new GetLastCommit());
         if (lastCommitResult.IsSuccess && lastCommitResult.Value is not null)
         {

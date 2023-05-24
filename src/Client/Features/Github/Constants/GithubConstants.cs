@@ -1,10 +1,10 @@
 namespace MyProfile.Features.Github.Constants;
  public static class GithubConstants
     {
-        public static class GetRepoInfo
+        public static class GetRepos
         {
-            public const string CacheDataKey = "obaki-site-github-getrepoinfo-cachedata";
-            public const string Endpoint = "https://api.github.com/repos/";
+            public const string CacheDataKey = "obaki-site-github-getrepos-cachedata";
+            public const string Endpoint = "https://api.github.com/users/obaki102/repos";
 
         }
 

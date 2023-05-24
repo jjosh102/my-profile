@@ -3,10 +3,10 @@
 @inject ISnackbar Snackbar
 <PageTitle>Projects</PageTitle>
 
-@if (githubProjects.Count == 0)
+@if (githubProjects is null)
 {
     <div class="d-flex justify-center flex-row flex-wrap gap-4">
-        @for (int i = 0; i < 5; i++)
+        @for (int i = 0; i < 6; i++)
         {
             <MudPaper Outlined="true" Style="width:400px">
                 <div class="mt-4">
@@ -54,23 +54,17 @@ else
 }
 
 @code {
-    private List<GithubRepoInfo> githubProjects = new();
-    //Todo: Check github api document if this can be queried instead.
-    private List<string> currentRepos = new List<string> { "ObakiSite", "Obaki.LocalStorageCache", "Obaki.DataChecker","Obaki.XmlSpecialCharacterEscaper" ,"Templates","Obaki.Toolkit","MyProfile" };
+    private IReadOnlyList<GithubRepo>? githubProjects ;
     protected override async Task OnInitializedAsync()
     {
-        //Todo: Save data  in local storage to minimize API calls?
-        foreach (string repo in currentRepos)
+        var result = await Mediatr.Send(new GetHighlightedRepos());
+        if (result.IsSuccess && result.Value is not null)
         {
-            var result = await Mediatr.Send(new GetRepoInfo("obaki102", repo));
-            if (result.IsSuccess && result.Value is not null)
-            {
-                githubProjects!.Add(result.Value);
-            }
-            else
-            {
-                Snackbar.Add("Sorry, unable to connect to Github API.", Severity.Error);
-            }
+            githubProjects = result.Value;
+        }
+        else
+        {
+            Snackbar.Add("Sorry, unable to connect to Github API.", Severity.Error);
         }
     }
 }
