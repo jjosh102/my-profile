@@ -4,24 +4,20 @@ using MyProfile;
 using MudBlazor.Services;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
-using MyProfile.Features.Github.Constants;
 using System.Reflection;
+using MyProfile.Features.Github.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-builder.Services.AddHttpClient(GithubConstants.HttpNameClient, client =>
-            {
-                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+builder.Services.AddHttpClient<IGithubHttpClient, GithubHttpClient>()
+                .AddTransientHttpErrorPolicy(policyBuilder =>
+                    policyBuilder.WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 3), (exception, timeSpan, retryCount, context) =>
+                    {
+                        Console.WriteLine(exception);
+                    })); 
 
-            })
-            .AddTransientHttpErrorPolicy(policyBuilder =>
-             policyBuilder.WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 3), (exception, timeSpan, retryCount, context) =>
-             {
-                 Console.WriteLine(exception);
-             })); ;
-             
 if (builder.HostEnvironment.Environment == "Development")
 {
     builder.Logging.SetMinimumLevel(LogLevel.Debug);

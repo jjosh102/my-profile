@@ -1,38 +1,33 @@
 using System.Net.Http.Json;
 using MediatR;
 using MyProfile.Features.Github.Constants;
+using MyProfile.Features.Github.Services;
 using MyProfile.Shared;
 using MyProfile.Shared.DTO;
 
 namespace MyProfile.Features.Github.Queries;
 
- public record GetLastCommit() : IRequest<Result<GithubLastCommit>>;
+public record GetLastCommit() : IRequest<Result<GithubLastCommit>>;
 
-    public class GetLastCommitHandler : IRequestHandler<GetLastCommit, Result<GithubLastCommit>>
+public class GetLastCommitHandler : IRequestHandler<GetLastCommit, Result<GithubLastCommit>>
+{
+    private readonly IGithubHttpClient _githubHttpClient;
+
+    public GetLastCommitHandler(IGithubHttpClient githubHttpClient)
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        public GetLastCommitHandler(IHttpClientFactory httpClientFactory)
+        _githubHttpClient = githubHttpClient;
+    }
+
+    public async Task<Result<GithubLastCommit>> Handle(GetLastCommit request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _httpClientFactory = httpClientFactory;
+            var result = await _githubHttpClient.GetRepoLastCommit("MyProfile");
+            return Result.Success<GithubLastCommit>(result);
         }
-
-        public async Task<Result<GithubLastCommit>> Handle(GetLastCommit request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            var httpClient = _httpClientFactory.CreateClient(GithubConstants.HttpNameClient);
-            var uriRequest = GithubConstants.GetLastCommit.Endpoint;
-            var response = await httpClient.GetAsync(uriRequest).ConfigureAwait(false);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content.ReadFromJsonAsync<GithubLastCommit>().ConfigureAwait(false);
-
-                if (result is null)
-                {
-                    return Result.Fail<GithubLastCommit>(Error.EmptyValue);
-                }
-
-                return result;
-            }
-            return Result.Fail<GithubLastCommit>(Error.EmptyValue);
+            return Result.Fail<GithubLastCommit>(ex.Message);
         }
     }
+}
