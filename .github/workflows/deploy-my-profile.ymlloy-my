@@ -1,4 +1,4 @@
-name: 'Deploy my profile'
+name: 'deploy-my-profile'
 on: push
 
 jobs:
