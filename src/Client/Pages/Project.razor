@@ -30,31 +30,40 @@ else
     <div class="d-flex justify-center flex-row flex-wrap gap-4">
         @foreach (var repo in githubProjects)
         {
-            <MudPaper Outlined="true" Style="width:400px">
+            <MudPaper Outlined="true" Width="400px" Height="205px">
                 <div class="mt-4">
-                    <MudLink Typo="Typo.body1" Class="mb-2 mt-4" Href="@repo.HtmlUrl"> <MudIcon Icon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Size="Size.Small" Class="mx-3" />@repo.Name </MudLink>
+                    <MudLink Typo="Typo.body1" Class="mb-2 mt-4" Href="@repo.HtmlUrl">
+                        <MudIcon Icon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Size="Size.Small" Class="mx-3" />
+                        @repo.Name
+                    </MudLink>
                 </div>
                 <MudDivider Class="my-2" />
                 <div class="ma-4" style="height:90px">
-                    <MudText Typo="Typo.body2" Align="Align.Justify">  @repo.Description</MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Justify"> @repo.Description</MudText>
                 </div>
 
                 <MudStack Row="true" Class="ml-4 my-2">
                     <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
-                        <MudImage Src="@($"https://img.shields.io/github/last-commit/obaki102/{repo.Name}?style=flat-square")" Class="rounded-lg" />
+                        <MudImage Src="@($"https://img.shields.io/github/last-commit/obaki102/{repo.Name}?style=flat-square")"
+                            Class="rounded-lg" />
                     </MudLink>
                     <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
-                        <MudImage Src="@($"https://img.shields.io/github/stars/obaki102/{repo.Name}?style=flat-square&logo=github" )" Class="rounded-lg" />
+                        <MudImage
+                            Src="@($"https://img.shields.io/github/stars/obaki102/{repo.Name}?style=flat-square&logo=github" )"
+                            Class="rounded-lg" />
                     </MudLink>
+                    @if (!string.IsNullOrWhiteSpace(repo.Homepage))
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Link" Size="Size.Small" Href="@repo.Homepage" />
+                    }
                 </MudStack>
-
             </MudPaper>
         }
     </div>
 }
 
 @code {
-    private IReadOnlyList<GithubRepo>? githubProjects ;
+    private IReadOnlyList<GithubRepo>? githubProjects;
     protected override async Task OnInitializedAsync()
     {
         var result = await Mediatr.Send(new GetHighlightedRepos());
