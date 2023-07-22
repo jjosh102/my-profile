@@ -27,12 +27,7 @@ public class GithubHttpClient : IGithubHttpClient
             throw new Exception($"Status code error: {response.StatusCode}");
         }
 
-        var result = await response.Content.ReadFromJsonAsync<GithubLastCommit>().ConfigureAwait(false);
-        if (result is null)
-        {
-            throw new NullReferenceException("No value");
-        }
-
+        var result = await response.Content.ReadFromJsonAsync<GithubLastCommit>().ConfigureAwait(false) ?? throw new NullReferenceException("No value");
         return result;
 
     }
@@ -46,12 +41,7 @@ public class GithubHttpClient : IGithubHttpClient
             throw new Exception($"Status code error: {response.StatusCode}");
         }
 
-        var result = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubRepo>>().ConfigureAwait(false);
-        if (result is null)
-        {
-            throw new NullReferenceException("No value");
-        }
-
+        var result = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubRepo>>().ConfigureAwait(false) ?? throw new NullReferenceException("No value");
         return result;
     }
 }

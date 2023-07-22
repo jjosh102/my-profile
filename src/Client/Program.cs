@@ -6,6 +6,7 @@ using Polly;
 using Polly.Contrib.WaitAndRetry;
 using System.Reflection;
 using MyProfile.Features.Github.Services;
+using MyProfile.Features.ChatGpt;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -16,8 +17,13 @@ builder.Services.AddHttpClient<IGithubHttpClient, GithubHttpClient>()
                     policyBuilder.WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 3), (exception, timeSpan, retryCount, context) =>
                     {
                         Console.WriteLine(exception);
-                    })); 
-
+                    }));
+builder.Services.AddHttpClient<IChatGptHttpClient, ChatGptHttpClient>()
+                .AddTransientHttpErrorPolicy(policyBuilder =>
+                    policyBuilder.WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 3), (exception, timeSpan, retryCount, context) =>
+                    {
+                        Console.WriteLine(exception);
+                    }));
 if (builder.HostEnvironment.Environment == "Development")
 {
     builder.Logging.SetMinimumLevel(LogLevel.Debug);

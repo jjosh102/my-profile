@@ -1,17 +1,12 @@
 ﻿@page "/"
 @inject ISnackbar Snackbar
-
+@inject IChatGptHttpClient Client
 <div class="d-flex flex-grow-1 gap-1">
 
-    <MudPaper Class="d-flex align-center flex-grow-1 gap-4  my-8" Elevation="1" Height="300px" Outlined="true">
+    <MudPaper Class="d-flex align-center flex-grow-1 gap-4  my-8" Elevation="1" Height="176px" Outlined="true">
         <MudStack Class="ml-16">
             <MudText Typo="Typo.h6">Joshua J L. Piluden</MudText>
             <MudText Typo="Typo.button">.NET Developer</MudText>
-            <MudText Typo="Typo.subtitle1" Align="Align.Justify" Class="mr-16">Hey there, I'm a developer who has a
-                passion for acquiring fresh knowledge and crafting innovative tools and applications. Having worked for
-                @yearsOfExp years, I possess expertise in various technologies, but I'm constantly seeking challenging
-                opportunities that enable me to step beyond my comfort zone.</MudText>
-
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                 <div>
                     <MudTooltip Class="mud-theme-dark">
@@ -150,7 +145,7 @@
         </MudStack>
     </MudPaper>
     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-        <MudPaper Class="d-flex align-center mt-8" Elevation="1" Height="300px" Width="100px" Outlined="true">
+        <MudPaper Class="d-flex align-center mt-8" Elevation="1" Height="176px" Outlined="true">
             <MudStack>
                 <MudTooltip Text="GitHub" Color="Color.Primary" Placement="Placement.Right">
                     <MudIconButton Href="https://github.com/obaki102" Icon="@Icons.Custom.Brands.GitHub"
@@ -169,7 +164,42 @@
     </MudHidden>
 </div>
 <div class="d-flex justify-center mt-12">
+
+    @if (!string.IsNullOrWhiteSpace(chatGptResponse))
+    {
+        <MudPaper Class="d-flex align-center flex-grow-1 gap-4  my-8" Elevation="1" Outlined="true">
+            <MudText Typo="Typo.subtitle1" Align="Align.Justify" Class="ma-4">
+                <Typewriter Builder="@typewriter" />
+            </MudText>
+        </MudPaper>
+    }
+    else
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+
 </div>
 @code {
     private int yearsOfExp = DateTime.Now.Year - 2012;
+    private static string chatGptResponse = string.Empty;
+    TypewriterBuilder? typewriter;
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Client.AskChatGpt();
+        if (!string.IsNullOrWhiteSpace(result))
+        {
+            chatGptResponse = result;
+            typewriter = new TypewriterBuilder(defaultCharacterPause: 6)
+            .TypeString(chatGptResponse, 50)
+            .Pause(20)
+            .DeleteAll()
+            .Loop();
+        }
+        else
+        {
+            Snackbar.Add("Sorry, unable to connect to ChatGpt.", Severity.Error);
+        }
+
+        StateHasChanged();
+    }
 }
