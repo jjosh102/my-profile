@@ -2,13 +2,13 @@
 @inject ISnackbar Snackbar
 @inject IChatGptHttpClient Client
 <div class="d-flex flex-grow-1 gap-1">
-
-    <MudPaper Class="d-flex align-center flex-grow-1 gap-4  my-8" Elevation="1" Height="176px" Outlined="true">
+    <MudPaper Class="d-flex align-center flex-grow-1 gap-4  mt-8" Elevation="1" Height="176px" Outlined="true">
         <MudStack Class="ml-16">
-            <MudText Typo="Typo.h6">Joshua J L. Piluden</MudText>
+            <MudText Typo="Typo.h6">Josh</MudText>
             <MudText Typo="Typo.button">.NET Developer</MudText>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                 <div>
+                     <MudText Typo="Typo.button">Skills: </MudText>
                     <MudTooltip Class="mud-theme-dark">
                         <ChildContent>
                             <MudChip Color="Color.Primary">C#</MudChip>
@@ -25,8 +25,7 @@
                                     </CardHeaderContent>
                                 </MudCardHeader>
                                 <MudCardContent>
-                                    <MudText Align="Align.Justify" Typo="Typo.body2">C# is my main language since
-                                        college. Although I have grown comfortable using it , I have so much to learn.
+                                    <MudText Align="Align.Justify" Typo="Typo.body2">C# has been my primary language ever since college, and I couldn't be more thrilled about it! Throughout the years, I've grown remarkably comfortable with it, but you know what excites me even more? There's still so much left to explore and learn, and I can't wait to dive into all the amazing possibilities it offers!
                                     </MudText>
                                 </MudCardContent>
                             </MudCard>
@@ -48,9 +47,7 @@
                                     </CardHeaderContent>
                                 </MudCardHeader>
                                 <MudCardContent>
-                                    <MudText Align="Align.Justify" Typo="Typo.body2">I picked up Blazor last year and
-                                        I'm having a blast learning every nook and cranny. Compared to other SPA
-                                        framework you can solely build application using primarily C#. </MudText>
+                                    <MudText Align="Align.Justify" Typo="Typo.body2">In 2022, I started my journey with Blazor, and I must say, it has been an absolute delight! Exploring every nook and cranny of this framework has been a thrilling experience. What sets Blazor apart is that, unlike many other SPA frameworks, you can build applications entirely using the power of C#, which adds a whole new level of convenience and enjoyment to the development process! I can't wait to see how far I can take my Blazor skills and create incredible projects with it!</MudText>
                                 </MudCardContent>
                             </MudCard>
                         </TooltipContent>
@@ -71,10 +68,7 @@
                                     </CardHeaderContent>
                                 </MudCardHeader>
                                 <MudCardContent>
-                                    <MudText Align="Align.Justify" Typo="Typo.body2">Ever since I passed AZ-900, I was
-                                        introduced into the world of cloud computing. A testament of this is I was able
-                                        to establish this site with zero cost.This site takes full advantage of Azure
-                                        serverless services. </MudText>
+                                    <MudText Align="Align.Justify" Typo="Typo.body2">Passing AZ-900 opened up an exciting world of cloud computing for me! One impressive result of this newfound knowledge is that I successfully launched this website without incurring any costs. Thanks to Azure's serverless services, I could fully leverage the capabilities of the cloud, making this achievement even more incredible! The possibilities seem boundless, and I can't wait to explore more of Azure's offerings to create even more remarkable projects in the future! </MudText>
                                 </MudCardContent>
                             </MudCard>
                         </TooltipContent>
@@ -95,11 +89,7 @@
                                     </CardHeaderContent>
                                 </MudCardHeader>
                                 <MudCardContent>
-                                    <MudText Align="Align.Justify" Typo="Typo.body2">This is currently the tech stack I
-                                        use with my current company. I was able to create various automations using
-                                        Power BI - for our reports and dashboards, Power Apps - for our UI based tools
-                                        and finally Power Automate for integrating to external services such as MS
-                                        Teams, Sharepoint and Service Now. </MudText>
+                                    <MudText Align="Align.Justify" Typo="Typo.body2">In one of my recent projects, I utilized a tech stack that included Power BI for reports and dashboards, Power Apps for UI-based tools, and Power Automate to integrate with external services like MS Teams, Sharepoint, and Service Now. It was a transformative experience, enabling us to create various automations and deliver efficient solutions. I'm humbled by the impact these tools had on our project's success! </MudText>
                                 </MudCardContent>
                                 <MudCardActions>
                                     <MudChip Size="Size.Small" Color="Color.Primary">Power BI</MudChip>
@@ -117,8 +107,7 @@
                             <MudCard Elevation="0" Class="mud-theme-dark" Style="width:300px">
                                 <MudCardHeader>
                                     <CardHeaderAvatar>
-                                        <MudText Typo="Typo.subtitle2" Align="Align.Left">Skills I picked up throughout
-                                            my career.</MudText>
+                                        <MudText Typo="Typo.subtitle2" Align="Align.Left">Here are the skills I've acquired throughout my career.</MudText>
                                     </CardHeaderAvatar>
                                     <CardHeaderContent>
                                     </CardHeaderContent>
@@ -163,8 +152,7 @@
         </MudPaper>
     </MudHidden>
 </div>
-<div class="d-flex justify-center mt-12">
-
+<div class="d-flex justify-center mt-4">
     @if (!string.IsNullOrWhiteSpace(chatGptResponse))
     {
         <MudPaper Class="d-flex align-center flex-grow-1 gap-4  my-8" Elevation="1" Outlined="true">
@@ -191,7 +179,7 @@
             chatGptResponse = result;
             typewriter = new TypewriterBuilder(defaultCharacterPause: 6)
             .TypeString(chatGptResponse, 50)
-            .Pause(20)
+            .Pause(30000)
             .DeleteAll()
             .Loop();
         }
