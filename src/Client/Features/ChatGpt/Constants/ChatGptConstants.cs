@@ -3,6 +3,7 @@ namespace MyProfile.Features.ChatGpt;
 public static class ChatGptConstants
 {
     public const string BaseAddress = "https://obaki-webapi.onrender.com";
+    public const string CacheDataKey = "chat-gpt-response-cachedata";
     public const string Endpoint = "/ask-chatgpt";
     public const string Question = """
                                     create a lively introduction with this information `Josh

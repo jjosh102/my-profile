@@ -7,6 +7,7 @@ using Polly.Contrib.WaitAndRetry;
 using System.Reflection;
 using MyProfile.Features.Github.Services;
 using MyProfile.Features.ChatGpt;
+using Obaki.LocalStorageCache;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -24,6 +25,7 @@ builder.Services.AddHttpClient<IChatGptHttpClient, ChatGptHttpClient>()
                     {
                         Console.WriteLine(exception);
                     }));
+builder.Services.AddLocalStorageCacheAsSingleton();
 if (builder.HostEnvironment.Environment == "Development")
 {
     builder.Logging.SetMinimumLevel(LogLevel.Debug);
