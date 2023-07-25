@@ -1,5 +1,5 @@
 @page "/projects"
-@inject ISender Mediatr
+@inject IGithubHttpClient GitHubClient
 @inject ISnackbar Snackbar
 <PageTitle>Projects</PageTitle>
 
@@ -66,7 +66,7 @@ else
     private IReadOnlyList<GithubRepo>? githubProjects;
     protected override async Task OnInitializedAsync()
     {
-        var result = await Mediatr.Send(new GetHighlightedRepos());
+        var result = await GitHubClient.GetReposToBeShown();
         if (result.IsSuccess && result.Value is not null)
         {
             githubProjects = result.Value;

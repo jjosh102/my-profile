@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject ISender Mediatr
+@inject IGithubHttpClient GitHubClient
 @inject ISnackbar Snackbar
 
 <MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="_theme" />
@@ -58,7 +58,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var lastCommitResult = await Mediatr.Send(new GetLastCommit());
+        var lastCommitResult = await GitHubClient.GetRepoLastCommit("MyProfile");
         if (lastCommitResult.IsSuccess && lastCommitResult.Value is not null)
         {
             githubLastCommit = lastCommitResult.Value;

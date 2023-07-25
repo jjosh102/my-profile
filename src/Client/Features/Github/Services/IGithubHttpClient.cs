@@ -1,9 +1,8 @@
-using MyProfile.Shared.DTO;
-
-namespace MyProfile.Features.Github.Services;
+using MyProfile.Shared;
+namespace MyProfile.Features.Github;
 
 public interface IGithubHttpClient
 {
-    public Task<IReadOnlyList<GithubRepo>> GetRepos();
-    public Task<GithubLastCommit> GetRepoLastCommit(string repoName);
+    public Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown();
+    public Task<Result<GithubLastCommit>> GetRepoLastCommit(string repoName);
 }

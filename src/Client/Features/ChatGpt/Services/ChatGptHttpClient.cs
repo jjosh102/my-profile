@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using MyProfile.Shared;
 using Obaki.LocalStorageCache;
 namespace MyProfile.Features.ChatGpt;
 public class ChatGptHttpClient : IChatGptHttpClient
@@ -12,7 +13,7 @@ public class ChatGptHttpClient : IChatGptHttpClient
         _httpClient.BaseAddress = new Uri(ChatGptConstants.BaseAddress);
         _localStorageCache = localStorageCache;
     }
-    public async Task<string> AskChatGpt()
+    public async Task<Result<string>> AskChatGpt()
     {
         var cache = await _localStorageCache.GetOrCreateCacheAsync(
                 ChatGptConstants.CacheDataKey,
@@ -24,11 +25,11 @@ public class ChatGptHttpClient : IChatGptHttpClient
 
                    if (!response.IsSuccessStatusCode)
                    {
-                       throw new Exception($"Status code error: {response.StatusCode}");
+                       return Result.Fail<string>(Error.HttpError(response.StatusCode.ToString()));
                    }
                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                });
 
-        return cache ?? throw new NullReferenceException("No value");
+        return cache ??  Result.Fail<string>(Error.EmptyValue);
     }
 }

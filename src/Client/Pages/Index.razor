@@ -175,9 +175,9 @@
     {
         Console.WriteLine(chatGptResponse);
         var result = await Client.AskChatGpt();
-        if (!string.IsNullOrWhiteSpace(result))
+        if (!string.IsNullOrWhiteSpace(result.Value) && result.IsSuccess)
         {
-            chatGptResponse = result;
+            chatGptResponse = result.Value;
             typewriter = new TypewriterBuilder(defaultCharacterPause: 6)
             .TypeString(chatGptResponse, 50)
             .Pause(30000)
