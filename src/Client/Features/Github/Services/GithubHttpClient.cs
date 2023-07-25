@@ -1,8 +1,7 @@
 using System.Net.Http.Json;
 using MyProfile.Features.Github.Constants;
-using MyProfile.Shared.DTO;
-
-namespace MyProfile.Features.Github.Services;
+using MyProfile.Shared;
+namespace MyProfile.Features.Github;
 
 public class GithubHttpClient : IGithubHttpClient
 {
@@ -12,7 +11,7 @@ public class GithubHttpClient : IGithubHttpClient
         _httpClient = httpClient;
         _httpClient.BaseAddress = new Uri(GithubConstants.BaseAddress);
     }
-    public async Task<GithubLastCommit> GetRepoLastCommit(string repoName)
+    public async Task<Result<GithubLastCommit>> GetRepoLastCommit(string repoName)
     {
         if (string.IsNullOrWhiteSpace(repoName))
         {
@@ -24,24 +23,38 @@ public class GithubHttpClient : IGithubHttpClient
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Status code error: {response.StatusCode}");
+            return Result.Fail<GithubLastCommit>(Error.HttpError(response.StatusCode.ToString()));
         }
 
-        var result = await response.Content.ReadFromJsonAsync<GithubLastCommit>().ConfigureAwait(false) ?? throw new NullReferenceException("No value");
-        return result;
+        var result = await response.Content.ReadFromJsonAsync<GithubLastCommit>().ConfigureAwait(false);
+
+        if(result is null)
+        {
+            Result.Fail(Error.EmptyValue);
+        }
+
+        return Result.Success(result!);
 
     }
 
-    public async Task<IReadOnlyList<GithubRepo>> GetRepos()
+    public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()
     {
         var response = await _httpClient.GetAsync(GithubConstants.GetRepos.Endpoint).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Status code error: {response.StatusCode}");
+            return Result.Fail<IReadOnlyList<GithubRepo>>(Error.HttpError(response.StatusCode.ToString()));
         }
 
-        var result = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubRepo>>().ConfigureAwait(false) ?? throw new NullReferenceException("No value");
-        return result;
+        var result = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubRepo>>().ConfigureAwait(false);
+
+        if(result is null)
+        {
+            Result.Fail(Error.EmptyValue);
+        }
+
+        var reposTobeShown = result!.Where(t => t.Topics.Contains("show")).ToList();
+
+        return Result.Success<IReadOnlyList<GithubRepo>>(reposTobeShown);
     }
 }

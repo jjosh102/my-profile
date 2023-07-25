@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
-
-namespace MyProfile.Shared.DTO;
+namespace MyProfile.Features.Github;
    
     public class License
     {

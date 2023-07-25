@@ -3,7 +3,8 @@ namespace MyProfile.Shared;
 public class Error : IEquatable<Error>
     {
         public static readonly Error None = new(string.Empty, string.Empty);
-        public static readonly Error EmptyValue = new("Error.EmptyValue", "Result is empty.");
+        public static readonly Error EmptyValue = new(nameof(Error), "Result is empty.");
+        // todo: create  a separate class
         public static Error HttpError(string code) => new($"HttpError - {code}", "Result encountered a Http error");
         public Error(string code, string messaage)
         {
@@ -34,7 +35,7 @@ public class Error : IEquatable<Error>
             if (obj.GetType() != GetType())
                 return false;
 
-            if (obj is not Error entity)
+            if (obj is not Error)
                 return false;
 
             return true;

@@ -1,6 +1,7 @@
+using MyProfile.Shared;
 namespace MyProfile.Features.ChatGpt;
 
 public interface IChatGptHttpClient
 {
-     public Task<string> AskChatGpt();
+     public Task<Result<string>> AskChatGpt();
 }
