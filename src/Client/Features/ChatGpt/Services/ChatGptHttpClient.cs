@@ -17,7 +17,7 @@ public class ChatGptHttpClient : IChatGptHttpClient
     {
         var cache = await _localStorageCache.GetOrCreateCacheAsync(
                 ChatGptConstants.CacheDataKey,
-                TimeSpan.FromHours(1),
+                TimeSpan.FromDays(7),
                async () =>
                {
                    var question = new ChatGptRequest(ChatGptConstants.Question);
