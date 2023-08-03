@@ -18,8 +18,8 @@
                 </div>
 
                 <MudStack Row="true" Class="ml-4 my-2">
-                    <MudSkeleton Width="90%" Animation="Animation.Wave" />
-                    <MudSkeleton Width="90%" Animation="Animation.Wave" />
+                    <MudSkeleton Width="30%" Animation="Animation.Wave" />
+                    <MudSkeleton Width="30%" Animation="Animation.Wave" />
                 </MudStack>
             </MudPaper>
         }
@@ -70,6 +70,7 @@ else
         if (result.IsSuccess && result.Value is not null)
         {
             githubProjects = result.Value;
+            await Task.Delay(3000);
         }
         else
         {
