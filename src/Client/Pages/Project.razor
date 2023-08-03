@@ -43,15 +43,23 @@ else
                 </div>
 
                 <MudStack Row="true" Class="ml-4 my-2">
-                    <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
-                        <MudImage Src="@($"https://img.shields.io/github/last-commit/obaki102/{repo.Name}?style=flat-square")"
-                            Class="rounded-lg" />
-                    </MudLink>
-                    <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
-                        <MudImage
-                            Src="@($"https://img.shields.io/github/stars/obaki102/{repo.Name}?style=flat-square&logo=github" )"
-                            Class="rounded-lg" />
-                    </MudLink>
+                    @if (isImageLoaded)
+                    {
+                        <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
+                            <MudImage Src="@($"https://img.shields.io/github/last-commit/obaki102/{repo.Name}?style=flat-square")"
+                                Class="rounded-lg" />
+                        </MudLink>
+                        <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
+                            <MudImage
+                                Src="@($"https://img.shields.io/github/stars/obaki102/{repo.Name}?style=flat-square&logo=github" )"
+                                Class="rounded-lg" />
+                        </MudLink>
+                    }
+                    else
+                    {
+                        <MudSkeleton Width="30%" Animation="Animation.Wave" />
+                        <MudSkeleton Width="30%" Animation="Animation.Wave" />
+                    }
                     @if (!string.IsNullOrWhiteSpace(repo.Homepage))
                     {
                         <MudIconButton Icon="@Icons.Material.Filled.Link" Size="Size.Small" Href="@repo.Homepage" />
@@ -64,13 +72,16 @@ else
 
 @code {
     private IReadOnlyList<GithubRepo>? githubProjects;
+    private bool isImageLoaded = false;
     protected override async Task OnInitializedAsync()
     {
         var result = await GitHubClient.GetReposToBeShown();
         if (result.IsSuccess && result.Value is not null)
         {
             githubProjects = result.Value;
+            StateHasChanged();
             await Task.Delay(3000);
+            isImageLoaded = true;
         }
         else
         {
