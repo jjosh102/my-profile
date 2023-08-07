@@ -5,7 +5,7 @@
 @inject IJSRuntime JsRuntime
 
 <div class="d-flex flex-grow-1 gap-1">
-    <MudPaper Class="d-flex align-center flex-grow-1 gap-4  mt-8" Elevation="1" Height="250px" Outlined="true">
+    <MudPaper Class="d-flex align-center flex-grow-1 gap-4  mt-8" Elevation="1" Height="200px" Outlined="true">
         <MudStack Class="ml-16">
             <MudText Typo="Typo.h3">Josh</MudText>
             <MudText Typo="Typo.h5">.NET Developer</MudText>
@@ -156,7 +156,7 @@
         </MudStack>
     </MudPaper>
     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-        <MudPaper Class="d-flex align-center mt-8" Elevation="1" Height="250px" Outlined="true">
+        <MudPaper Class="d-flex align-center mt-8" Elevation="1" Height="200px" Outlined="true">
             <MudStack Class="ma-2">
                 <MudTooltip Text="GitHub" Color="Color.Primary" Placement="Placement.Right">
                     <MudIconButton Href="https://github.com/obaki102" Icon="@Icons.Custom.Brands.GitHub"
@@ -170,10 +170,10 @@
                     <MudIconButton Href="https://www.linkedin.com/in/joshua-j-piluden-b06798110"
                         Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Primary" />
                 </MudTooltip>
-                <MudTooltip Text="Download CV" Color="Color.Primary" Placement="Placement.Right">
+                @* <MudTooltip Text="Download CV" Color="Color.Primary" Placement="Placement.Right">
                     <MudIconButton OnClick="@DownloadFileFromURL" Icon="@Icons.Material.Filled.Download"
                         Color="Color.Primary" />
-                </MudTooltip>
+                </MudTooltip> *@
             </MudStack>
         </MudPaper>
     </MudHidden>
@@ -218,10 +218,10 @@
         StateHasChanged();
     }
 
-    private async Task DownloadFileFromURL()
+    @* private async Task DownloadFileFromURL()
     {
 
         await JsRuntime.InvokeVoidAsync("DownloadPdfFile", "JoshuaJPiludenCV.pdf", GetCVFilePath());
     }
-    private string GetCVFilePath() => $"{WebAssemblyHostEnvironment.BaseAddress}/files/JoshuaJPiludenCV.pdf";
+    private string GetCVFilePath() => $"{WebAssemblyHostEnvironment.BaseAddress}/files/JoshuaJPiludenCV.pdf"; *@
 }
