@@ -30,18 +30,23 @@
                 <MudAppBar Elevation="0" Bottom="true">
                     <MudContainer MaxWidth="MaxWidth.Medium">
                         <MudDivider Class="mb-4" />
-                            <MudStack Row="true">
-                                <MudText Typo="Typo.subtitle2">© joshuajpiluden @DateTime.Now.Year</MudText>
-                                <MudSpacer />
+                        <MudStack Row="true">
+                            <MudText Typo="Typo.subtitle2">© joshuajpiluden @DateTime.Now.Year</MudText>
 
-                                <MudLink Href="@lastCommitUrl" Typo="Typo.subtitle2">
-                                    <MudImage Src="https://img.shields.io/github/last-commit/obaki102/MyProfile?style=flat-square" Class="rounded-lg" />
-                                </MudLink>
+                            <MudSpacer />
 
-                                <MudTooltip Text="Deployment status" Color="Color.Primary" Placement="Placement.Bottom">
-                                    <MudImage Src="https://github.com/obaki102/MyProfile/workflows/Deploy%20my%20profile/badge.svg" Elevation="25" />
-                                </MudTooltip>
-                            </MudStack>
+                            <MudLink Href="@lastCommitUrl" Typo="Typo.subtitle2">
+                                <MudImage Src="https://img.shields.io/github/last-commit/obaki102/MyProfile?style=flat-square" Class="rounded-lg" />
+                            </MudLink>
+
+                            <MudTooltip Text="Github Deployment status" Color="Color.Primary" Placement="Placement.Bottom">
+                                <MudImage Src="https://github.com/obaki102/MyProfile/workflows/Deploy%20my%20profile/badge.svg" Elevation="25" />
+                            </MudTooltip>
+
+                            <MudTooltip Text="Netlify Deployment status" Color="Color.Primary" Placement="Placement.Bottom">
+                                <MudImage Src="https://api.netlify.com/api/v1/badges/2101b1eb-e125-4359-9c59-c2a4f4133f41/deploy-status" Elevation="25" />
+                            </MudTooltip>
+                        </MudStack>
                     </MudContainer>
                 </MudAppBar>
             </MudHidden>
