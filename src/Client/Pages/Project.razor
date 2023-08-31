@@ -5,7 +5,7 @@
 
 @if (githubProjects is null)
 {
-    <div class="d-flex justify-center flex-row flex-wrap gap-4">
+    <div class="d-flex justify-center flex-row flex-wrap gap-4 mt-16">
         @for (int i = 0; i < 6; i++)
         {
             <MudPaper Outlined="true" Style="width:400px">
@@ -27,7 +27,7 @@
 }
 else
 {
-    <div class="d-flex justify-center flex-row flex-wrap gap-4">
+    <div class="d-flex justify-center flex-row flex-wrap gap-4 mt-16">
         @foreach (var repo in githubProjects)
         {
             <MudPaper Outlined="true" Width="400px" Height="205px">

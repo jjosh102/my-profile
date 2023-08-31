@@ -9,15 +9,29 @@
     <MudAppBar Elevation="0">
         <MudContainer MaxWidth="MaxWidth.Medium">
             <div class="d-flex align-center" Elevation="1">
-                <MudLink Href="" Typo="Typo.h6">joshuajpiluden</MudLink>
                 <MudSpacer />
-                <MudLink Href="projects" Typo="Typo.button">Projects</MudLink>
+                <MudTooltip Text="Projects" Color="Color.Primary" Placement="Placement.Bottom">
+                    <MudIconButton Href="projects"
+                                   Icon="@Icons.Custom.Uncategorized.Folder" Color="Color.Primary" />
+                </MudTooltip>
+                <MudTooltip Text="GitHub" Color="Color.Primary" Placement="Placement.Bottom">
+                    <MudIconButton Href="https://github.com/obaki102" Icon="@Icons.Custom.Brands.GitHub"
+                                   Color="Color.Primary" />
+                </MudTooltip>
+                <MudTooltip Text="Email Address" Color="Color.Primary" Placement="Placement.Bottom">
+                    <MudIconButton Href="mailto:joshuajpiluden@gmail.com" Icon="@Icons.Custom.Brands.Google"
+                                   Color="Color.Primary" />
+                </MudTooltip>
+                <MudTooltip Text="Linkedin" Color="Color.Primary" Placement="Placement.Bottom">
+                    <MudIconButton Href="https://www.linkedin.com/in/joshua-j-piluden-b06798110"
+                                   Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Primary" />
+                </MudTooltip>
+
             </div>
         </MudContainer>
-
     </MudAppBar>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Medium" Class="my-4">
+        <MudContainer MaxWidth="MaxWidth.Medium">
             <ErrorBoundary>
                 <ChildContent>  @Body </ChildContent>
                 <ErrorContent Context="Exception">
