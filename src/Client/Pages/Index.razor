@@ -3,6 +3,8 @@
 @inject ISnackbar Snackbar
 @inject IChatGptHttpClient ChatGptClient
 @inject IJSRuntime JsRuntime
+@inject IGithubHttpClient GitHubClient
+
 <PageTitle>joshuajpiluden</PageTitle>
 <MudStack Class="my-8">
     <MudStack Row="true">
@@ -167,25 +169,49 @@
                 </MudHidden>
             </MudStack>
         </div>
-        <MudCarousel Class="mud-width-full" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
-            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
-                <div class="d-flex" style="height:100%">
-                    <MudText Typo="Typo.subtitle1" Align="Align.Justify" Class="ma-4">
-                       Project Placeholder
-                    </MudText>
-                </div>
-            </MudCarouselItem>
-            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Secondary">
-                <MudText Typo="Typo.subtitle1" Align="Align.Justify" Class="ma-4">
-                    Project Placeholder
-                </MudText>
-            </MudCarouselItem>
-            <MudCarouselItem Transition="Transition.Fade">
-                <MudText Typo="Typo.subtitle1" Align="Align.Justify" Class="ma-4">
-                    Project Placeholder
-                </MudText>
-            </MudCarouselItem>
-        </MudCarousel>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+            @if (githubProjects is null || githubProjects.Count == 0)
+            {
+
+                <MudCarousel Class="mud-width-full" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        <MudCarouselItem Transition="Transition.Fade" Color="@Color.Dark">
+                            <div class="d-flex" style="height:100%">
+                                <MudText Typo="Typo.subtitle1" Align="Align.Justify" Class="ma-4">
+                                    Loading...
+                                </MudText>
+                            </div>
+                        </MudCarouselItem>
+                    }
+                </MudCarousel>
+            }
+            else
+            {
+                <MudCarousel Class="mud-width-full" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+                    @foreach (var repo in githubProjects)
+                    {
+                        <MudCarouselItem Transition="Transition.Fade" Color="@Color.Dark">
+                            <div class="d-flex" style="height:100%">
+                                <MudPaper Outlined="true" Width="400px" Height="205px">
+                                    <div class="mt-4">
+                                        <MudLink Typo="Typo.body1" Class="mb-2 mt-4" Href="@repo.HtmlUrl">
+                                            <MudIcon Icon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Size="Size.Small" Class="mx-3" />
+                                            @repo.Name
+                                        </MudLink>
+                                    </div>
+                                    <MudDivider Class="my-2" />
+                                    <div class="ma-4" style="height:90px">
+                                        <MudText Typo="Typo.body2" Align="Align.Justify"> @repo.Description</MudText>
+                                    </div>
+                                </MudPaper>
+                            </div>
+                        </MudCarouselItem>
+                    }
+                </MudCarousel>
+
+            }
+        </MudHidden>
     </MudStack>
     <div class="mt-8">
         @if (!string.IsNullOrWhiteSpace(chatGptResponse) && typewriter is not null)
@@ -208,13 +234,26 @@
     private int yearsOfExp = DateTime.Now.Year - 2012;
     private static string chatGptResponse = string.Empty;
     TypewriterBuilder? typewriter;
+    private IReadOnlyList<GithubRepo>? githubProjects;
+
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(chatGptResponse);
-        var result = await ChatGptClient.AskChatGpt();
-        if (!string.IsNullOrWhiteSpace(result.Value) && result.IsSuccess)
+        // todo: check if  reusable component can be utilize to eliminate code duplication below.
+        var gitHubResult = await GitHubClient.GetReposToBeShown();
+        if (gitHubResult.IsSuccess && gitHubResult.Value is not null)
         {
-            chatGptResponse = result.Value;
+            githubProjects = gitHubResult.Value;
+        }
+        else
+        {
+            Snackbar.Add("Sorry, unable to connect to Github API.", Severity.Error);
+        }
+        StateHasChanged();
+
+        var chatGptResult = await ChatGptClient.AskChatGpt();
+        if (!string.IsNullOrWhiteSpace(chatGptResult.Value) && chatGptResult.IsSuccess)
+        {
+            chatGptResponse = chatGptResult.Value;
             typewriter = new TypewriterBuilder(defaultCharacterPause: 6)
             .TypeString(chatGptResponse, 50)
             .Pause(30000)
@@ -225,6 +264,7 @@
         {
             Snackbar.Add("Sorry, unable to connect to ChatGpt.", Severity.Error);
         }
+
 
         StateHasChanged();
     }

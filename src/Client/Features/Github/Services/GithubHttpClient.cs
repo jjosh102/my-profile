@@ -1,15 +1,19 @@
 using System.Net.Http.Json;
 using MyProfile.Features.Github.Constants;
 using MyProfile.Shared;
+using Obaki.LocalStorageCache;
+
 namespace MyProfile.Features.Github;
 
 public class GithubHttpClient : IGithubHttpClient
 {
     private readonly HttpClient _httpClient;
-    public GithubHttpClient(HttpClient httpClient)
+    private readonly ILocalStorageCache _localStorageCache;
+    public GithubHttpClient(HttpClient httpClient, ILocalStorageCache localStorageCache)
     {
         _httpClient = httpClient;
         _httpClient.BaseAddress = new Uri(GithubConstants.BaseAddress);
+        _localStorageCache = localStorageCache;
     }
     public async Task<Result<GithubLastCommit>> GetRepoLastCommit(string repoName)
     {
@@ -28,7 +32,7 @@ public class GithubHttpClient : IGithubHttpClient
 
         var result = await response.Content.ReadFromJsonAsync<GithubLastCommit>().ConfigureAwait(false);
 
-        if(result is null)
+        if (result is null)
         {
             Result.Fail(Error.EmptyValue);
         }
@@ -39,22 +43,30 @@ public class GithubHttpClient : IGithubHttpClient
 
     public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()
     {
-        var response = await _httpClient.GetAsync(GithubConstants.GetRepos.Endpoint).ConfigureAwait(false);
+        var cache = await _localStorageCache.GetOrCreateCacheAsync(
+            GithubConstants.GetRepos.CacheDataKey,
+            TimeSpan.FromHours(1),
+              async () =>
+              {
+                  var response = await _httpClient.GetAsync(GithubConstants.GetRepos.Endpoint).ConfigureAwait(false);
 
-        if (!response.IsSuccessStatusCode)
-        {
-            return Result.Fail<IReadOnlyList<GithubRepo>>(Error.HttpError(response.StatusCode.ToString()));
-        }
+                  if (!response.IsSuccessStatusCode)
+                  {
+                      return Result.Fail<IReadOnlyList<GithubRepo>>(Error.HttpError(response.StatusCode.ToString()));
+                  }
 
-        var result = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubRepo>>().ConfigureAwait(false);
+                  var result = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubRepo>>().ConfigureAwait(false);
 
-        if(result is null)
-        {
-            Result.Fail(Error.EmptyValue);
-        }
+                  if (result is null)
+                  {
+                      Result.Fail(Error.EmptyValue);
+                  }
 
-        var reposTobeShown = result!.Where(t => t.Topics.Contains("show")).ToList();
+                  var reposTobeShown = result!.Where(t => t.Topics.Contains("show")).ToList();
 
-        return Result.Success<IReadOnlyList<GithubRepo>>(reposTobeShown);
+                  return Result.Success<IReadOnlyList<GithubRepo>>(reposTobeShown);
+              });
+
+        return cache ?? Result.Fail<IReadOnlyList<GithubRepo>>(Error.EmptyValue);
     }
 }
