@@ -6,10 +6,10 @@
 @inject IGithubHttpClient GitHubClient
 
 <PageTitle>joshuajpiluden</PageTitle>
-<MudStack Class="my-8">
+<MudStack Class="my-16">
     <MudStack Row="true">
         <div style="width:450px; height:200px">
-            <MudStack Class="ma-2">
+            <MudStack>
                 <MudText Typo="Typo.h3">Josh</MudText>
                 <MudDivider />
                 <MudText Typo="Typo.h5">.NET Developer</MudText>
@@ -173,7 +173,7 @@
             @if (githubProjects is null || githubProjects.Count == 0)
             {
 
-                <MudCarousel Class="mud-width-full" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+                <MudCarousel Class="mud-width-full ml-12" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object" AutoCycleTime="cycleTime">
                     @for (int i = 0; i < 6; i++)
                     {
                         <MudCarouselItem Transition="Transition.Fade" Color="@Color.Dark">
@@ -188,7 +188,7 @@
             }
             else
             {
-                <MudCarousel Class="mud-width-full" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+                <MudCarousel Class="mud-width-full ml-12" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object" AutoCycleTime="cycleTime">
                     @foreach (var repo in githubProjects)
                     {
                         <MudCarouselItem Transition="Transition.Fade" Color="@Color.Dark">
@@ -231,6 +231,7 @@
 </MudStack>
 
 @code {
+    private TimeSpan cycleTime = new TimeSpan(0, 0, 10);
     private int yearsOfExp = DateTime.Now.Year - 2012;
     private static string chatGptResponse = string.Empty;
     TypewriterBuilder? typewriter;
