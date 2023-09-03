@@ -1,8 +1,9 @@
 @page "/projects"
+@using MyProfile.Shared.Components
 @inject IGithubHttpClient GitHubClient
 @inject ISnackbar Snackbar
 <PageTitle>Projects</PageTitle>
-
+<Header IsProject="false"/>
 @if (githubProjects is null)
 {
     <div class="d-flex justify-center flex-row flex-wrap gap-4 mt-16">

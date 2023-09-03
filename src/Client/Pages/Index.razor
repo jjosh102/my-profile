@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using MyProfile.Shared.Components
 @inject IWebAssemblyHostEnvironment WebAssemblyHostEnvironment
 @inject ISnackbar Snackbar
 @inject IChatGptHttpClient ChatGptClient
@@ -6,6 +7,7 @@
 @inject IGithubHttpClient GitHubClient
 
 <PageTitle>joshuajpiluden</PageTitle>
+<Header IsProject="true" />
 <MudStack Class="my-16">
     <MudStack Row="true">
         <div style="width:450px; height:200px">
@@ -172,7 +174,6 @@
         <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
             @if (githubProjects is null || githubProjects.Count == 0)
             {
-
                 <MudCarousel Class="mud-width-full ml-12" Style="width:400px;height:200px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object" AutoCycleTime="cycleTime">
                     @for (int i = 0; i < 6; i++)
                     {
