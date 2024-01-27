@@ -3,7 +3,7 @@
 @inject IGithubHttpClient GitHubClient
 @inject ISnackbar Snackbar
 <PageTitle>Projects</PageTitle>
-<Header IsProject="false"/>
+<Header IsProject="false" />
 @if (githubProjects is null)
 {
     <div class="d-flex justify-center flex-row flex-wrap gap-4 mt-16">
@@ -44,15 +44,18 @@ else
                 </div>
 
                 <MudStack Row="true" Class="ml-4 my-2">
-                    <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
-                        <MudImage Src="@($"https://img.shields.io/github/last-commit/obaki102/{repo.Name}?style=flat-square")"
-                            Class="rounded-lg" />
-                    </MudLink>
-                    <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
-                        <MudImage
-                            Src="@($"https://img.shields.io/github/stars/obaki102/{repo.Name}?style=flat-square&logo=github" )"
-                            Class="rounded-lg" />
-                    </MudLink>
+                    @if (!repo.Name.Equals("Obaki.Toolkit"))
+                    {
+                        <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
+                            <MudImage Src="@($"https://img.shields.io/github/last-commit/obaki102/{repo.Name}?style=flat-square")"
+                                Class="rounded-lg" />
+                        </MudLink>
+                        <MudLink Href="@repo.HtmlUrl" Typo="Typo.subtitle2">
+                            <MudImage
+                                Src="@($"https://img.shields.io/github/stars/obaki102/{repo.Name}?style=flat-square&logo=github" )"
+                                Class="rounded-lg" />
+                        </MudLink>
+                    }
                     @if (!string.IsNullOrWhiteSpace(repo.Homepage))
                     {
                         <MudIconButton Icon="@Icons.Material.Filled.Link" Size="Size.Small" Href="@repo.Homepage" />
@@ -64,13 +67,19 @@ else
 }
 
 @code {
-    private IReadOnlyList<GithubRepo>? githubProjects;
+    private List<GithubRepo>? githubProjects;
     protected override async Task OnInitializedAsync()
     {
         var result = await GitHubClient.GetReposToBeShown();
         if (result.IsSuccess && result.Value is not null)
         {
             githubProjects = result.Value;
+            githubProjects.Add(new GithubRepo
+                {
+                    HtmlUrl = "https://wonderful-water-003dfb200.4.azurestaticapps.net/",
+                    Name = "Obaki.Toolkit",
+                    Description = "Obaki.Toolkit houses a collection of utility tools that I created leveraging wasm and mudblazor component library. "
+                });
         }
         else
         {

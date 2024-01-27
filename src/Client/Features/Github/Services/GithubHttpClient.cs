@@ -41,7 +41,7 @@ public class GithubHttpClient : IGithubHttpClient
 
     }
 
-    public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()
+    public async Task<Result<List<GithubRepo>>> GetReposToBeShown()
     {
         var cache = await _localStorageCache.GetOrCreateCacheAsync(
             GithubConstants.GetRepos.CacheDataKey,
@@ -52,10 +52,10 @@ public class GithubHttpClient : IGithubHttpClient
 
                   if (!response.IsSuccessStatusCode)
                   {
-                      return Result.Fail<IReadOnlyList<GithubRepo>>(Error.HttpError(response.StatusCode.ToString()));
+                      return Result.Fail<List<GithubRepo>>(Error.HttpError(response.StatusCode.ToString()));
                   }
 
-                  var result = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubRepo>>().ConfigureAwait(false);
+                  var result = await response.Content.ReadFromJsonAsync<List<GithubRepo>>().ConfigureAwait(false);
 
                   if (result is null)
                   {
@@ -64,9 +64,9 @@ public class GithubHttpClient : IGithubHttpClient
 
                   var reposTobeShown = result!.Where(t => t.Topics.Contains("show")).ToList();
 
-                  return Result.Success<IReadOnlyList<GithubRepo>>(reposTobeShown);
+                  return Result.Success<List<GithubRepo>>(reposTobeShown);
               });
 
-        return cache ?? Result.Fail<IReadOnlyList<GithubRepo>>(Error.EmptyValue);
+        return cache ?? Result.Fail<List<GithubRepo>>(Error.EmptyValue);
     }
 }
