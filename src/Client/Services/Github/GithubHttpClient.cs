@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using MyProfile.Features.Github.Constants;
-using MyProfile.Shared;
 using Obaki.LocalStorageCache;
 
 namespace MyProfile.Features.Github;

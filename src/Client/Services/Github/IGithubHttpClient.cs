@@ -1,5 +1,6 @@
-using MyProfile.Shared;
-namespace MyProfile.Features.Github;
+using MyProfile.Models;
+
+namespace MyProfile.Services.Github.Services;
 
 public interface IGithubHttpClient
 {
