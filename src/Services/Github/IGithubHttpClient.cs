@@ -1,6 +1,6 @@
 using MyProfile.Models;
 
-namespace MyProfile.Services.Github.Services;
+namespace MyProfile.Services.Github;
 
 public interface IGithubHttpClient
 {

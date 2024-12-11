@@ -1,4 +1,4 @@
-namespace MyProfile.Shared;
+namespace MyProfile.Models;
 
  public class Result
     {

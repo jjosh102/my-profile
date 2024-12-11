@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MyProfile;
 using MudBlazor.Services;
+using MyProfile.Services.Github;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
-using MyProfile.Features.Github;
 using Obaki.LocalStorageCache;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

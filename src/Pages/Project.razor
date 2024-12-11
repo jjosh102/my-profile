@@ -1,5 +1,6 @@
 @page "/projects"
-@using MyProfile.Shared.Components
+@using MyProfile.Models
+@using MyProfile.Services.Github
 @inject IGithubHttpClient GitHubClient
 @inject ISnackbar Snackbar
 <PageTitle>Projects</PageTitle>
@@ -67,7 +68,7 @@ else
 }
 
 @code {
-    private List<GithubRepo>? githubProjects;
+    private IEnumerable<GithubRepo>? githubProjects;
     protected override async Task OnInitializedAsync()
     {
         var result = await GitHubClient.GetReposToBeShown();

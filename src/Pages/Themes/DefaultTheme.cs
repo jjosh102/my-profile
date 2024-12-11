@@ -6,7 +6,7 @@ public static class DefaultTheme
         {
             var defaultTheme = new MudTheme();
             var defaultDarkPallete = defaultTheme.PaletteDark;
-            var defaultLightPallete = defaultTheme.Palette;
+            var defaultLightPallete = defaultTheme.PaletteLight;
             //Dark 
             defaultDarkPallete.Dark = "#202020";
             defaultDarkPallete.Primary = "#F5F5F5";

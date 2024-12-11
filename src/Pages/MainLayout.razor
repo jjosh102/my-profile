@@ -5,6 +5,7 @@
 <MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
+<MudPopoverProvider />
 <MudLayout>
    
     <MudMainContent>
@@ -12,8 +13,8 @@
             <ErrorBoundary>
                 <ChildContent>  @Body </ChildContent>
                 <ErrorContent Context="Exception">
-                    <MudChip Color="Color.Secondary">@Exception.GetType()</MudChip>
-                    <MudChip Color="Color.Secondary">@Exception.Message</MudChip>
+                    <MudChip T="string" Color="Color.Secondary">@Exception.GetType()</MudChip>
+                    <MudChip T="string" Color="Color.Secondary">@Exception.Message</MudChip>
                     <p class="errorUI">Nothing to see here right now. Sorry!</p>
                 </ErrorContent>
             </ErrorBoundary>

@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-namespace MyProfile.Features.Github;
+namespace MyProfile.Models;
  public class Object
     {
         [JsonPropertyName("sha")]

@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using MyProfile.Shared.Components
+@using MyProfile.Pages.Components
 @inject IWebAssemblyHostEnvironment WebAssemblyHostEnvironment
 @inject ISnackbar Snackbar
 @inject IJSRuntime JsRuntime
@@ -19,13 +19,13 @@
                     <div>
                         <MudTooltip Class="mud-theme-dark">
                             <ChildContent>
-                                <MudChip Color="Color.Primary" Size="Size.Small">C#</MudChip>
+                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">C#</MudChip>
                             </ChildContent>
                             <TooltipContent>
                                 <MudCard Elevation="0" Class="mud-theme-dark" Style="width:250px">
                                     <MudCardHeader>
                                         <CardHeaderAvatar>
-                                            <MudChip Color="Color.Primary">C#</MudChip>
+                                            <MudChip T="string" Color="Color.Primary">C#</MudChip>
                                         </CardHeaderAvatar>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.body1">Skill level</MudText>
@@ -46,13 +46,13 @@
                         </MudTooltip>
                         <MudTooltip Class="mud-theme-dark">
                             <ChildContent>
-                                <MudChip Color="Color.Primary" Size="Size.Small">Blazor</MudChip>
+                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Blazor</MudChip>
                             </ChildContent>
                             <TooltipContent>
                                 <MudCard Elevation="0" Class="mud-theme-dark" Style="width:250px">
                                     <MudCardHeader>
                                         <CardHeaderAvatar>
-                                            <MudChip Color="Color.Primary">Blazor</MudChip>
+                                            <MudChip T="string" Color="Color.Primary">Blazor</MudChip>
                                         </CardHeaderAvatar>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.body1">Skill level</MudText>
@@ -75,13 +75,13 @@
                         </MudTooltip>
                         <MudTooltip Class="mud-theme-dark">
                             <ChildContent>
-                                <MudChip Color="Color.Primary" Size="Size.Small">Azure</MudChip>
+                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Azure</MudChip>
                             </ChildContent>
                             <TooltipContent>
                                 <MudCard Elevation="0" Class="mud-theme-dark" Style="width:250px">
                                     <MudCardHeader>
                                         <CardHeaderAvatar>
-                                            <MudChip Color="Color.Primary">Azure</MudChip>
+                                            <MudChip T="string" Color="Color.Primary">Azure</MudChip>
                                         </CardHeaderAvatar>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.body1">Skill level</MudText>
@@ -104,13 +104,13 @@
                         </MudTooltip>
                         <MudTooltip Class="mud-theme-dark">
                             <ChildContent>
-                                <MudChip Color="Color.Primary" Size="Size.Small">Power Platform</MudChip>
+                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Power Platform</MudChip>
                             </ChildContent>
                             <TooltipContent>
                                 <MudCard Elevation="0" Class="mud-theme-dark" Style="width:320px">
                                     <MudCardHeader>
                                         <CardHeaderAvatar>
-                                            <MudChip Color="Color.Primary" Size="Size.Small">Power Platform</MudChip>
+                                            <MudChip T="string" Color="Color.Primary" Size="Size.Small">Power Platform</MudChip>
                                         </CardHeaderAvatar>
                                         <CardHeaderContent>
                                             <MudText Typo="Typo.body1">Skill level</MudText>
@@ -128,16 +128,16 @@
                                         </MudText>
                                     </MudCardContent>
                                     <MudCardActions>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Power BI</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Power Automate</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Power Apps</MudChip>
+                                        <MudChip T="string" Size="Size.Small" Color="Color.Primary">Power BI</MudChip>
+                                        <MudChip T="string" Size="Size.Small" Color="Color.Primary">Power Automate</MudChip>
+                                        <MudChip T="string" Size="Size.Small" Color="Color.Primary">Power Apps</MudChip>
                                     </MudCardActions>
                                 </MudCard>
                             </TooltipContent>
                         </MudTooltip>
                         <MudTooltip Class="mud-theme-dark">
                             <ChildContent>
-                                <MudChip Color="Color.Primary" Size="Size.Small">Others</MudChip>
+                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Others</MudChip>
                             </ChildContent>
                             <TooltipContent>
                                 <MudCard Elevation="0" Class="mud-theme-dark" Style="width:300px">
@@ -148,17 +148,17 @@
                                         </CardHeaderContent>
                                     </MudCardHeader>
                                     <MudCardContent>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">.NET Framework/Core</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Azure Functions</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">SharePoint</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Windows Forms</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">ASP Classic</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Docker</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Cold Fusion</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">PERL</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Oracle SOA</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">Salesforce</MudChip>
-                                        <MudChip Size="Size.Small" Color="Color.Primary">
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">.NET Framework/Core</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Azure Functions</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">SharePoint</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Windows Forms</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">ASP Classic</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Docker</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Cold Fusion</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">PERL</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Oracle SOA</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Salesforce</MudChip>
+                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">
                                             Business Intelligence (SQL, SSIS,
                                             SSRS)
                                         </MudChip>

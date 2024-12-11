@@ -1,8 +1,10 @@
 using System.Net.Http.Json;
-using MyProfile.Features.Github.Constants;
+
+using MyProfile.Models;
+using MyProfile.Shared.Constants;
 using Obaki.LocalStorageCache;
 
-namespace MyProfile.Features.Github;
+namespace MyProfile.Services.Github;
 
 public class GithubHttpClient : IGithubHttpClient
 {

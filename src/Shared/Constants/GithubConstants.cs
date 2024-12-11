@@ -1,4 +1,4 @@
-namespace MyProfile.Features.Github.Constants;
+namespace MyProfile.Shared.Constants;
 public static class GithubConstants
 {
 
