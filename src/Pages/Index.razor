@@ -6,227 +6,27 @@
 @inject IGithubHttpClient GitHubClient
 
 <PageTitle>joshuajpiluden</PageTitle>
-<Header IsProject="true" />
-<MudStack Class="my-16">
-    <MudStack Row="true">
+<Header/>
+<MudStack Class="my-2">
+    <MudStack Row="false">
         <div style="width:450px; height:200px">
             <MudStack>
                 <MudText Typo="Typo.h3">Josh</MudText>
                 <MudDivider />
                 <MudText Typo="Typo.h5">.NET Developer</MudText>
                 <MudDivider />
-                <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                    <div>
-                        <MudTooltip Class="mud-theme-dark">
-                            <ChildContent>
-                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">C#</MudChip>
-                            </ChildContent>
-                            <TooltipContent>
-                                <MudCard Elevation="0" Class="mud-theme-dark" Style="width:250px">
-                                    <MudCardHeader>
-                                        <CardHeaderAvatar>
-                                            <MudChip T="string" Color="Color.Primary">C#</MudChip>
-                                        </CardHeaderAvatar>
-                                        <CardHeaderContent>
-                                            <MudText Typo="Typo.body1">Skill level</MudText>
-                                            <MudRating SelectedValue="3" />
-                                        </CardHeaderContent>
-                                    </MudCardHeader>
-                                    <MudCardContent>
-                                        <MudText Align="Align.Justify" Typo="Typo.body2">
-                                            C# has been my primary language
-                                            ever since college, and I couldn't be more thrilled about it! Throughout the
-                                            years, I've grown remarkably comfortable with it, but you know what excites me
-                                            even more? There's still so much left to explore and learn, and I can't wait to
-                                            dive into all the amazing possibilities it offers!
-                                        </MudText>
-                                    </MudCardContent>
-                                </MudCard>
-                            </TooltipContent>
-                        </MudTooltip>
-                        <MudTooltip Class="mud-theme-dark">
-                            <ChildContent>
-                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Blazor</MudChip>
-                            </ChildContent>
-                            <TooltipContent>
-                                <MudCard Elevation="0" Class="mud-theme-dark" Style="width:250px">
-                                    <MudCardHeader>
-                                        <CardHeaderAvatar>
-                                            <MudChip T="string" Color="Color.Primary">Blazor</MudChip>
-                                        </CardHeaderAvatar>
-                                        <CardHeaderContent>
-                                            <MudText Typo="Typo.body1">Skill level</MudText>
-                                            <MudRating SelectedValue="3" />
-                                        </CardHeaderContent>
-                                    </MudCardHeader>
-                                    <MudCardContent>
-                                        <MudText Align="Align.Justify" Typo="Typo.body2">
-                                            In 2022, I started my journey with
-                                            Blazor, and I must say, it has been an absolute delight! Exploring every nook
-                                            and cranny of this framework has been a thrilling experience. What sets Blazor
-                                            apart is that, unlike many other SPA frameworks, you can build applications
-                                            entirely using the power of C#, which adds a whole new level of convenience and
-                                            enjoyment to the development process! I can't wait to see how far I can take my
-                                            Blazor skills and create incredible projects with it!
-                                        </MudText>
-                                    </MudCardContent>
-                                </MudCard>
-                            </TooltipContent>
-                        </MudTooltip>
-                        <MudTooltip Class="mud-theme-dark">
-                            <ChildContent>
-                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Azure</MudChip>
-                            </ChildContent>
-                            <TooltipContent>
-                                <MudCard Elevation="0" Class="mud-theme-dark" Style="width:250px">
-                                    <MudCardHeader>
-                                        <CardHeaderAvatar>
-                                            <MudChip T="string" Color="Color.Primary">Azure</MudChip>
-                                        </CardHeaderAvatar>
-                                        <CardHeaderContent>
-                                            <MudText Typo="Typo.body1">Skill level</MudText>
-                                            <MudRating SelectedValue="3" />
-                                        </CardHeaderContent>
-                                    </MudCardHeader>
-                                    <MudCardContent>
-                                        <MudText Align="Align.Justify" Typo="Typo.body2">
-                                            Passing AZ-900 opened up an
-                                            exciting world of cloud computing for me! One impressive result of this newfound
-                                            knowledge is that I successfully launched this website without incurring any
-                                            costs. Thanks to Azure's serverless services, I could fully leverage the
-                                            capabilities of the cloud, making this achievement even more incredible! The
-                                            possibilities seem boundless, and I can't wait to explore more of Azure's
-                                            offerings to create even more remarkable projects in the future!
-                                        </MudText>
-                                    </MudCardContent>
-                                </MudCard>
-                            </TooltipContent>
-                        </MudTooltip>
-                        <MudTooltip Class="mud-theme-dark">
-                            <ChildContent>
-                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Power Platform</MudChip>
-                            </ChildContent>
-                            <TooltipContent>
-                                <MudCard Elevation="0" Class="mud-theme-dark" Style="width:320px">
-                                    <MudCardHeader>
-                                        <CardHeaderAvatar>
-                                            <MudChip T="string" Color="Color.Primary" Size="Size.Small">Power Platform</MudChip>
-                                        </CardHeaderAvatar>
-                                        <CardHeaderContent>
-                                            <MudText Typo="Typo.body1">Skill level</MudText>
-                                            <MudRating SelectedValue="3" />
-                                        </CardHeaderContent>
-                                    </MudCardHeader>
-                                    <MudCardContent>
-                                        <MudText Align="Align.Justify" Typo="Typo.body2">
-                                            In one of my recent projects, I
-                                            utilized a tech stack that included Power BI for reports and dashboards, Power
-                                            Apps for UI-based tools, and Power Automate to integrate with external services
-                                            like MS Teams, Sharepoint, and Service Now. It was a transformative experience,
-                                            enabling us to create various automations and deliver efficient solutions. I'm
-                                            humbled by the impact these tools had on our project's success!
-                                        </MudText>
-                                    </MudCardContent>
-                                    <MudCardActions>
-                                        <MudChip T="string" Size="Size.Small" Color="Color.Primary">Power BI</MudChip>
-                                        <MudChip T="string" Size="Size.Small" Color="Color.Primary">Power Automate</MudChip>
-                                        <MudChip T="string" Size="Size.Small" Color="Color.Primary">Power Apps</MudChip>
-                                    </MudCardActions>
-                                </MudCard>
-                            </TooltipContent>
-                        </MudTooltip>
-                        <MudTooltip Class="mud-theme-dark">
-                            <ChildContent>
-                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">Others</MudChip>
-                            </ChildContent>
-                            <TooltipContent>
-                                <MudCard Elevation="0" Class="mud-theme-dark" Style="width:300px">
-                                    <MudCardHeader>
-                                        <CardHeaderAvatar>
-                                        </CardHeaderAvatar>
-                                        <CardHeaderContent>
-                                        </CardHeaderContent>
-                                    </MudCardHeader>
-                                    <MudCardContent>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">.NET Framework/Core</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Azure Functions</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">SharePoint</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Windows Forms</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">ASP Classic</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Docker</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Cold Fusion</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">PERL</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Oracle SOA</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">Salesforce</MudChip>
-                                        <MudChip Size="Size.Small" T="string" Color="Color.Primary">
-                                            Business Intelligence (SQL, SSIS,
-                                            SSRS)
-                                        </MudChip>
-                                    </MudCardContent>
-                                </MudCard>
-                            </TooltipContent>
-                        </MudTooltip>
-                    </div>
-                </MudHidden>
             </MudStack>
         </div>
-       
+        <Projects />
     </MudStack>
-    <div class="mt-8">
-        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-            @if (githubProjects is null || githubProjects.Count == 0)
-            {
-                <MudCarousel Class="mud-width-full " Style="width:700px;height:400px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object" AutoCycleTime="cycleTime">
-                    @for (int i = 0; i < 6; i++)
-                    {
-                        <MudCarouselItem Transition="Transition.Fade" Color="@Color.Dark">
-                            <div class="d-flex" style="height:100%">
-                                <MudText Typo="Typo.subtitle1" Align="Align.Justify" Class="ma-4">
-                                    Loading...
-                                </MudText>
-                            </div>
-                        </MudCarouselItem>
-                    }
-                </MudCarousel>
-            }
-            else
-            {
-                <MudCarousel Class="mud-width-full" Style="width:700px;height:400px;" ShowArrows="false" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object" AutoCycleTime="cycleTime">
-                    @foreach (var repo in githubProjects)
-                    {
-                        <MudCarouselItem Transition="Transition.Fade" Color="@Color.Dark">
-                            <div class="d-flex" style="height:100%">
-                                <MudPaper Outlined="true" Width="700px" Height="400px">
-                                    <div class="mt-4">
-                                        <MudLink Typo="Typo.body1" Class="mb-2 mt-4" Href="@repo.HtmlUrl">
-                                            <MudIcon Icon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Size="Size.Small" Class="mx-3" />
-                                            @repo.Name
-                                        </MudLink>
-                                    </div>
-                                    <MudDivider Class="my-2" />
-                                    <div class="ma-4" style="height:90px">
-                                        <MudText Typo="Typo.body2" Align="Align.Justify"> @repo.Description</MudText>
-                                    </div>
-                                </MudPaper>
-                            </div>
-                        </MudCarouselItem>
-                    }
-                </MudCarousel>
-
-            }
-        </MudHidden>
-
-    </div>
 </MudStack>
 
 @code {
-    private TimeSpan cycleTime = new TimeSpan(0, 0, 10);
-    private int yearsOfExp = DateTime.Now.Year - 2012;
+ 
     private IReadOnlyList<GithubRepo>? githubProjects;
 
     protected override async Task OnInitializedAsync()
     {
-        // todo: check if  reusable component can be utilize to eliminate code duplication below.
         var gitHubResult = await GitHubClient.GetReposToBeShown();
         if (gitHubResult.IsSuccess && gitHubResult.Value is not null)
         {
@@ -237,13 +37,7 @@
             Snackbar.Add("Sorry, unable to connect to Github API.", Severity.Error);
         }
         StateHasChanged();
-       
+
     }
 
-    @* private async Task DownloadFileFromURL()
-    {
-
-        await JsRuntime.InvokeVoidAsync("DownloadPdfFile", "JoshuaJPiludenCV.pdf", GetCVFilePath());
-    }
-    private string GetCVFilePath() => $"{WebAssemblyHostEnvironment.BaseAddress}/files/JoshuaJPiludenCV.pdf"; *@
 }
