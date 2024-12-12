@@ -6,31 +6,35 @@
 @inject IGithubHttpClient GitHubClient
 
 <PageTitle>joshuajpiluden</PageTitle>
-<Header/>
+<Header />
 <MudStack Class="my-2">
     <MudStack Row="false">
-        <div style="width:450px; height:200px">
-            <MudStack>
-                <MudText Typo="Typo.h3">Josh</MudText>
-                <MudDivider />
-                <MudText Typo="Typo.h5">.NET Developer</MudText>
-                <MudDivider />
-            </MudStack>
-        </div>
+        <MudStack>
+            <div class="wrapper">
+                <div class="figlet-text">
+                    I'm Josh
+                </div>
+            </div>
+
+            <MudDivider />
+            <MudText Typo="Typo.subtitle1">I'm a .NET developer who loves exploring new ideas, building cool stuff, and
+                learning from my mistakes along the way.</MudText>
+            <MudDivider />
+        </MudStack>
         <Projects />
     </MudStack>
 </MudStack>
 
 @code {
- 
+
     private IReadOnlyList<GithubRepo>? githubProjects;
 
     protected override async Task OnInitializedAsync()
     {
         var gitHubResult = await GitHubClient.GetReposToBeShown();
-        if (gitHubResult.IsSuccess && gitHubResult.Value is not null)
+        if (gitHubResult.IsSuccess && gitHubResult.Value is { } result)
         {
-            githubProjects = gitHubResult.Value;
+            githubProjects = result;
         }
         else
         {

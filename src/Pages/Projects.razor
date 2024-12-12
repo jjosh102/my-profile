@@ -5,60 +5,26 @@
 @inject IGithubHttpClient GitHubClient
 @inject ISnackbar Snackbar
 
-@* @foreach (var context.Item in githubProjects)
-        {
-            <MudPaper Outlined="true" Width="400px" Height="205px">
-                <div class="mt-4">
-                    <MudLink Typo="Typo.body1" Class="mb-2 mt-4" Href="@context.Item.HtmlUrl">
-                        <MudIcon Icon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Size="Size.Small" Class="mx-3" />
-                        @context.Item.Name
-                    </MudLink>
-                </div>
-                <MudDivider Class="my-2" />
-                <div class="ma-4" style="height:90px">
-                    <MudText Typo="Typo.body2" Align="Align.Justify"> @context.Item.Description</MudText>
-                </div>
-
-                <MudStack Row="true" Class="ml-4 my-2">
-                    @if (!context.Item.Name!.Equals("Obaki.Toolkit"))
-                    {
-                        <MudLink Href="@context.Item.HtmlUrl" Typo="Typo.subtitle2">
-                            <MudImage Src="@($"https://img.shields.io/github/last-commit/obaki102/{context.Item.Name}?style=flat-square")"
-                                Class="rounded-lg" />
-                        </MudLink>
-                        <MudLink Href="@context.Item.HtmlUrl" Typo="Typo.subtitle2">
-                            <MudImage
-                                Src="@($"https://img.shields.io/github/stars/obaki102/{context.Item.Name}?style=flat-square&logo=github" )"
-                                Class="rounded-lg" />
-                        </MudLink>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(context.Item.Homepage))
-                    {
-                        <MudIconButton Icon="@Icons.Material.Filled.Link" Size="Size.Small" Href="@context.Item.Homepage" />
-                    }
-                </MudStack>
-            </MudPaper>
-        } *@
 
 <MudDataGrid Items="@githubProjects" Filterable="false" SortMode="@SortMode.None" Groupable="false" Dense="true"
     ColumnResizeMode="ResizeMode.Column">
     <Columns>
         <TemplateColumn CellClass="d-flex justify-start" Title="Projects">
             <CellTemplate>
-                <MudPaper Outlined="false">
-                    <div class="mt-4">
-                        <MudLink Typo="Typo.body1" Class="mb-2 mt-4" Href="@context.Item.HtmlUrl">
+                <MudStack Row="false">
+                    <div class="mt-2">
+                        <MudLink Typo="Typo.body1" Class="mb-2 mt-2" Href="@context.Item.HtmlUrl">
                             <MudIcon Icon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Size="Size.Small"
-                                Class="mx-3" />
+                                Class="mx-2" />
                             @context.Item.Name
                         </MudLink>
                     </div>
-                    <MudDivider Class="my-2" />
-                    <div class="ma-4" style="height:90px">
+            
+                    <div class="ma-2">
                         <MudText Typo="Typo.body2" Align="Align.Justify"> @context.Item.Description</MudText>
                     </div>
 
-                    <MudStack Row="true" Class="ml-4 my-2">
+                    <MudStack Row="true" Class="ml-2 my-2">
                         <MudLink Href="@context.Item.HtmlUrl" Typo="Typo.subtitle2">
                             <MudImage
                                 Src="@($"https://img.shields.io/github/last-commit/obaki102/{context.Item.Name}?style=flat-square")"
@@ -75,7 +41,7 @@
                                 Href="@context.Item.Homepage" />
                         }
                     </MudStack>
-                </MudPaper>
+                </MudStack>
             </CellTemplate>
         </TemplateColumn>
     </Columns>
