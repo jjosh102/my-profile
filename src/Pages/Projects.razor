@@ -1,66 +1,61 @@
 @page "/projects"
-@using MyProfile.Models
-@using MyProfile.Pages.Components
-@using MyProfile.Services.Github
 @inject IGithubHttpClient GitHubClient
-@inject ISnackbar Snackbar
 
+<div class="container mx-auto p-4">
+    <div class="space-y-6">
+        <h1 class="text-3xl font-bold text-[#c9d1d9]">My Projects</h1>
+        @if (githubProjects != null && githubProjects.Any())
+        {
+            @foreach (var project in githubProjects)
+            {
+                <div class="bg-[#0d1117] border border-[#30363d] shadow rounded-lg p-4">
+                    <div class="flex flex-col space-y-4">
+                        <a href="@project.HtmlUrl" class="text-lg font-bold text-[#58a6ff] hover:underline">
+                          @project.Name
+                        </a>
 
-<MudDataGrid Items="@githubProjects" Filterable="false" SortMode="@SortMode.None" Groupable="false" Dense="true"
-    ColumnResizeMode="ResizeMode.Column">
-    <Columns>
-        <TemplateColumn CellClass="d-flex justify-start" Title="Projects">
-            <CellTemplate>
-                <MudStack Row="false">
-                    <div class="mt-2">
-                        <MudLink Typo="Typo.body1" Class="mb-2 mt-2" Href="@context.Item.HtmlUrl">
-                            <MudIcon Icon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Size="Size.Small"
-                                Class="mx-2" />
-                            @context.Item.Name
-                        </MudLink>
+                        <p class="text-[#c9d1d9]">
+                            @project.Description
+                        </p>
+
+                        <div class="flex items-center space-x-4">
+                            <a href="@project.HtmlUrl">
+                                <img src="https://img.shields.io/github/last-commit/obaki102/@project.Name?style=flat-square" alt="Last Commit" class="rounded-lg" />
+                            </a>
+                            <a href="@project.HtmlUrl">
+                                <img src="https://img.shields.io/github/stars/obaki102/@project.Name?style=flat-square&logo=github" alt="Stars" class="rounded-lg" />
+                            </a>
+                            @if (!string.IsNullOrWhiteSpace(project.Homepage))
+                            {
+                                <a href="@project.Homepage" class="text-sm font-medium text-[#58a6ff] hover:underline" title="Site Link">
+                                    <svg class="inline-block w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24" version="1.1" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10.59 13.41a1 1 0 010-1.42l4.83-4.83a3 3 0 114.24 4.24l-1.41 1.41a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 00-1.42-1.42l-4.83 4.83a1 1 0 01-1.42 0zM13.41 10.59a1 1 0 010 1.42l-4.83 4.83a3 3 0 11-4.24-4.24l1.41-1.41a1 1 0 011.42 1.42l-1.41 1.41a1 1 0 001.42 1.42l4.83-4.83a1 1 0 011.42 0z"></path>
+                                    </svg>
+                                </a>
+                            }
+                        </div>
                     </div>
-            
-                    <div class="ma-2">
-                        <MudText Typo="Typo.body2" Align="Align.Justify"> @context.Item.Description</MudText>
-                    </div>
-
-                    <MudStack Row="true" Class="ml-2 my-2">
-                        <MudLink Href="@context.Item.HtmlUrl" Typo="Typo.subtitle2">
-                            <MudImage
-                                Src="@($"https://img.shields.io/github/last-commit/obaki102/{context.Item.Name}?style=flat-square")"
-                                Class="rounded-lg" />
-                        </MudLink>
-                        <MudLink Href="@context.Item.HtmlUrl" Typo="Typo.subtitle2">
-                            <MudImage
-                                Src="@($"https://img.shields.io/github/stars/obaki102/{context.Item.Name}?style=flat-square&logo=github" )"
-                                Class="rounded-lg" />
-                        </MudLink>
-                        @if (!string.IsNullOrWhiteSpace(context.Item.Homepage))
-                        {
-                            <MudIconButton Icon="@Icons.Material.Filled.Link" Size="Size.Small"
-                                Href="@context.Item.Homepage" />
-                        }
-                    </MudStack>
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
-    </Columns>
-</MudDataGrid>
-
-
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center text-[#8b949e]">
+               loading projects...
+            </p>
+        }
+    </div>
+</div>
 
 @code {
     private IEnumerable<GithubRepo>? githubProjects;
+
     protected override async Task OnInitializedAsync()
     {
         var result = await GitHubClient.GetReposToBeShown();
         if (result.IsSuccess && result.Value is not null)
         {
             githubProjects = result.Value;
-        }
-        else
-        {
-            Snackbar.Add("Sorry, unable to connect to Github API.", Severity.Error);
         }
     }
 }

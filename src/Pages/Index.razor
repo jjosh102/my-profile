@@ -1,32 +1,26 @@
 ﻿@page "/"
-@using MyProfile.Pages.Components
 @inject IWebAssemblyHostEnvironment WebAssemblyHostEnvironment
-@inject ISnackbar Snackbar
 @inject IJSRuntime JsRuntime
 @inject IGithubHttpClient GitHubClient
 
 <PageTitle>joshuajpiluden</PageTitle>
-<Header />
-<MudStack Class="my-2">
-    <MudStack Row="false">
-        <MudStack>
-            <div class="wrapper">
-                <div class="figlet-text">
-                    I'm Josh
-                </div>
-            </div>
 
-            <MudDivider />
-            <MudText Typo="Typo.subtitle1">I'm a .NET developer who loves exploring new ideas, building cool stuff, and
-                learning from my mistakes along the way.</MudText>
-            <MudDivider />
-        </MudStack>
-        <Projects />
-    </MudStack>
-</MudStack>
+<div class="my-4 space-y-6">
+    <div class="text-center">
+        <div class="text-4xl font-bold text-white dark:text-[#c9d1d9]">
+            I'm Josh
+        </div>
+        <hr class="my-4 border-t-2 border-gray-300 dark:border-gray-600" />
+        <p class="text-lg text-gray-700 dark:text-gray-300">
+            I'm a .NET developer who loves exploring new ideas, building cool stuff, and learning from my mistakes along the way.
+        </p>
+        <hr class="my-4 border-t-2 border-gray-300 dark:border-gray-600" />
+    </div>
+
+    <Projects />
+</div>
 
 @code {
-
     private IReadOnlyList<GithubRepo>? githubProjects;
 
     protected override async Task OnInitializedAsync()
@@ -36,12 +30,5 @@
         {
             githubProjects = result;
         }
-        else
-        {
-            Snackbar.Add("Sorry, unable to connect to Github API.", Severity.Error);
-        }
-        StateHasChanged();
-
     }
-
 }

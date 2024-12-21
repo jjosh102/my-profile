@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MyProfile;
-using MudBlazor.Services;
 using MyProfile.Services.Github;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
@@ -26,5 +25,5 @@ else
 {
     builder.Logging.SetMinimumLevel(LogLevel.None);
 }
-builder.Services.AddMudServices();
+
 await builder.Build().RunAsync();
