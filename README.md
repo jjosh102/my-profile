@@ -1,4 +1,4 @@
 # MyProfile
 <p>
-Hey there! Welcome to my personal site, where I showcase my skills as a developer. Here you'll find info about me, my projects, and my skills.  
+Hey there! Welcome to my little corner of the web. This is where I share a bit about myself, my projects, and what I’ve been working on as a developer
 </p>
