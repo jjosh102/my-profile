@@ -32,7 +32,7 @@
                         <div class="flex flex-wrap gap-2 text-xs text-[#58a6ff] my-4">
                             @if (project.Topics.Any())
                             {
-                                foreach (var topic in project.Topics)
+                                foreach (var topic in project.Topics.Where(s => !s.Equals("show", StringComparison.OrdinalIgnoreCase)))
                                 {
                                     <span class="bg-[#121D2F] rounded-full px-2 py-1">@topic</span>
                                 }
