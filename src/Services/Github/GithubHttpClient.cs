@@ -23,7 +23,7 @@ public class GithubHttpClient : IGithubHttpClient
             throw new ArgumentNullException(nameof(repoName));
         }
 
-        var uriRequest = $"repos/obaki102/{repoName}/git/refs/heads/master";
+        var uriRequest = $"repos/joshjlp/{repoName}/git/refs/heads/master";
         var response = await _httpClient.GetAsync(uriRequest).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)

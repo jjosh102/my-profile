@@ -8,7 +8,7 @@ public static class GithubConstants
     public static class GetRepos
     {
         public const string CacheDataKey = "obaki-site-github-getrepos-cachedata";
-        public const string Endpoint = "users/obaki102/repos";
+        public const string Endpoint = "users/joshjlp/repos";
         public const string Name = "MyProfile";
 
     }
@@ -17,7 +17,7 @@ public static class GithubConstants
     {
         public const string CacheDataKey = "obaki-site-github-getlastcommit-cachedata";
 
-        public const string Url = "https://github.com/obaki102/MyProfile/commit/";
+        public const string Url = "https://github.com/joshjlp/MyProfile/commit/";
     }
 
 }
