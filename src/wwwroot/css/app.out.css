@@ -853,6 +853,11 @@ video {
   color: rgb(201 209 217 / var(--tw-text-opacity));
 }
 
+.text-\[\#cf222e\] {
+  --tw-text-opacity: 1;
+  color: rgb(207 34 46 / var(--tw-text-opacity));
+}
+
 .text-\[\#f85149\] {
   --tw-text-opacity: 1;
   color: rgb(248 81 73 / var(--tw-text-opacity));
@@ -881,6 +886,10 @@ video {
 .text-yellow-500 {
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity));
+}
+
+.underline {
+  text-decoration-line: underline;
 }
 
 .shadow {

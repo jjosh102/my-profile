@@ -5,7 +5,7 @@
     <div class="space-y-6">
         <h1 class="text-3xl font-bold text-[#c9d1d9]">My Projects</h1>
         
-        @if (githubProjects != null && githubProjects.Any())
+        @if (githubProjects is not null && githubProjects.Any())
         {
             @foreach (var project in githubProjects)
             {
@@ -60,9 +60,21 @@
         }
         else
         {
-            <p class="text-center text-[#8b949e]">
-                loading projects...
+            @if(apiResult is {} result && result.IsFailure)
+            {
+            <p class="text-center text-[#cf222e]">
+                <span>
+                   GitHub API rate limit reached. Please visit my repositories directly using this link: 
+                    <a href="https://github.com/jjosh102" target="_blank" class="text-[#58a6ff] underline">
+                        My GitHub Profile
+                    </a>
+                </span>
             </p>
+            }else{
+                <p class="text-center text-[#8b949e]">
+                    loading projects...
+                </p>
+            }
         }
     </div>
 </div>
@@ -99,13 +111,14 @@
     };
 
     private IEnumerable<GithubRepo>? githubProjects;
+    private Result<IReadOnlyList<GithubRepo>>? apiResult;
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await GitHubClient.GetReposToBeShown();
-        if (result.IsSuccess && result.Value is not null)
+        apiResult = await GitHubClient.GetReposToBeShown();
+        if (apiResult.IsSuccess && apiResult.Value is not null)
         {
-            githubProjects = result.Value;
+            githubProjects = apiResult.Value;
         }
     }
 
