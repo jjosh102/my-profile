@@ -7,12 +7,11 @@
 
 <div class="my-4 space-y-6">
     <div class="text-center">
-        <div class="text-4xl font-bold text-white dark:text-[#c9d1d9]">
-           Hi 👋, I'm Josh
-        </div>
+        <div id="typewriter" class="text-4xl font-bold text-white dark:text-[#c9d1d9]"></div>
         <hr class="my-4 border-t-2 border-gray-300 dark:border-gray-600" />
         <p class="text-lg text-gray-700 dark:text-gray-300">
-            I'm a .NET developer who loves exploring new ideas, building cool stuff, and learning from my mistakes along the way.
+            I'm a .NET developer who loves exploring new ideas, building cool stuff, and learning from my mistakes along
+            the way.
         </p>
         <hr class="my-4 border-t-2 border-gray-300 dark:border-gray-600" />
     </div>
@@ -29,6 +28,13 @@
         if (gitHubResult.IsSuccess && gitHubResult.Value is { } result)
         {
             githubProjects = result;
+        }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("typewriterEffect", "typewriter");
         }
     }
 }
