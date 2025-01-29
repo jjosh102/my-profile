@@ -6,7 +6,7 @@ using Obaki.LocalStorageCache;
 
 namespace MyProfile.Services.Github;
 
-public class GithubHttpClient : IGithubHttpClient
+internal sealed class GithubHttpClient : IGithubHttpClient
 {
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageCache _localStorageCache;
