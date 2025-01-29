@@ -1,13 +1,10 @@
-@page "/projects"
-@inject IGithubHttpClient GitHubClient
-
 <div class="container mx-auto p-4">
     <div class="space-y-6">
         <h1 class="text-3xl font-bold text-[#c9d1d9]">My Projects</h1>
 
-        @if (githubProjects is not null && githubProjects.Any())
+        @if (_githubProjects is not null && _githubProjects.Any())
         {
-            @foreach (var project in githubProjects)
+            @foreach (var project in _githubProjects)
             {
                 <div class="flex justify-between w-full bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
                     <div class="w-full">
@@ -62,7 +59,7 @@
         }
         else
         {
-            @if(apiResult is {} result && result.IsFailure)
+            @if(_isApiError)
             {
                 <div class="p-4 text-center">
                     <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
@@ -118,89 +115,3 @@
     </div>
 </div>
 
-@code {
-    private static readonly Dictionary<string, string> LanguageColors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-    {
-        { "CSS", "#563d7c" },
-        { "HTML", "#e34c26" },
-        { "JavaScript", "#f1e05a" },
-        { "Python", "#3572A5" },
-        { "C#", "#178600" },
-        { "Java", "#b07219" },
-        { "Ruby", "#701516" },
-        { "PHP", "#4f5b93" },
-        { "Go", "#00ADD8" },
-        { "C", "#555555" },
-        { "C++", "#f34b7d" },
-        { "TypeScript", "#2b7489" },
-        { "Swift", "#ffac45" },
-        { "Kotlin", "#7f52ff" },
-        { "Rust", "#000000" },
-        { "Dart", "#00B4AB" },
-        { "Scala", "#c22d40" },
-        { "Shell", "#89e051" },
-        { "PowerShell", "#012456" },
-        { "R", "#276dc3" },
-        { "Lua", "#000080" },
-        { "Objective-C", "#438eff" },
-        { "Elixir", "#6e4a7e" },
-        { "Perl", "#0298c3" },
-        { "Groovy", "#2f6a8f" },
-        { "Vue", "#42b883" }
-    };
-
-    private IEnumerable<GithubRepo>? githubProjects;
-    private Result<IReadOnlyList<GithubRepo>>? apiResult;
-
-    protected override async Task OnInitializedAsync()
-    {
-        apiResult = await GitHubClient.GetReposToBeShown();
-        if (apiResult.IsSuccess && apiResult.Value is not null)
-        {
-            githubProjects = apiResult.Value;
-        }
-    }
-
-    private static string GetTimeAgo(DateTime lastUpdate)
-    {
-        var timeDifference = DateTime.UtcNow - lastUpdate;
-
-        if (timeDifference.TotalSeconds < 60)
-        {
-            return $"{(int)timeDifference.TotalSeconds} second{(timeDifference.TotalSeconds > 1 ? "s" : "")} ago";
-        }
-        else if (timeDifference.TotalMinutes < 60)
-        {
-            return $"{(int)timeDifference.TotalMinutes} minute{(timeDifference.TotalMinutes > 1 ? "s" : "")} ago";
-        }
-        else if (timeDifference.TotalHours < 24)
-        {
-            return $"{(int)timeDifference.TotalHours} hour{(timeDifference.TotalHours > 1 ? "s" : "")} ago";
-        }
-        else if (timeDifference.TotalDays < 2)
-        {
-            return "Yesterday";
-        }
-        else if (timeDifference.TotalDays < 30)
-        {
-            return $"{(int)timeDifference.TotalDays} day{(timeDifference.TotalDays > 1 ? "s" : "")} ago";
-        }
-        else if (timeDifference.TotalDays < 365)
-        {
-            return $"on {lastUpdate:MMM d}"; 
-        }
-        else
-        {
-            return $"on {lastUpdate:MMM d, yyyy}"; 
-        }
-    }
-
-    private string GetLanguageBackgroundColor(string? language)
-    {
-        if (string.IsNullOrWhiteSpace(language))
-        {
-            return "#cccccc";
-        }
-        return LanguageColors.TryGetValue(language, out var color) ? color : "#cccccc";
-    }
-}
