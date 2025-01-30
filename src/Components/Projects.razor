@@ -6,7 +6,9 @@
         {
             @foreach (var project in _githubProjects)
             {
-                <div class="flex justify-between w-full bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
+               <div class="flex justify-between w-full bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4
+                            hover:border-[#58a6ff]/50 transition-all duration-300 hover:shadow-xl hover:shadow-[#58a6ff]/10
+                            transform scale-100 hover:scale-105">
                     <div class="w-full">
                         <div class="mb-1">
                             <a href="@project.HtmlUrl" class="text-lg font-bold text-[#58a6ff] hover:underline">
