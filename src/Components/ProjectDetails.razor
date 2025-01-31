@@ -1,7 +1,6 @@
 @page "/my-profile/project-details/{Id:int}"
 @page "/project-details/{Id:int}"
 
-
 <div class="container mx-auto p-4">
     <div class="space-y-6">
         <div class="flex items-center space-x-6">
@@ -19,41 +18,111 @@
         @if (_repoData is not null)
         {
             <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
-                <h2 class="text-2xl font-bold text-[#58a6ff]">@_repoData.Name</h2>
+                <div class="flex justify-between items-start mb-3">
+                    <span class="text-lg font-bold text-[#58a6ff]">@_repoData.Name</span>
+                    <div class="flex shrink-0 space-x-2">
+                        @if (!string.IsNullOrWhiteSpace(_repoData.Homepage))
+                        {
+                            <a href="@_repoData.Homepage" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center space-x-2 bg-[#238636] text-white px-3 py-1.5 rounded-md hover:bg-[#2ea043] transition-colors duration-200">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                    <polyline points="15 3 21 3 21 9" />
+                                    <line x1="10" y1="14" x2="21" y2="3" />
+                                </svg>
+                                <span class="text-xs font-medium">Visit Site</span>
+                            </a>
+                        }
+                        <a href="@_repoData.HtmlUrl" target="_blank" rel="noopener noreferrer"
+                            class="flex items-center space-x-2 bg-[#21262d] text-[#58a6ff] border border-[#30363d] px-3 py-1.5 rounded-md hover:bg-[#30363d] transition-colors duration-200">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                                <path
+                                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                            </svg>
+                            <span class="text-xs font-medium">View on GitHub</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="border-t border-[#30363d] mb-4"></div>
                 <p class="text-gray-400 text-sm">@_repoData.Description</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
-                    <div class="bg-[#121D2F] rounded-lg p-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 my-4">
+                    <div class="bg-[#121D2F] rounded-lg p-4 text-center">
                         <h3 class="text-lg font-bold text-[#58a6ff]">Stargazers</h3>
-                        <p class="text-gray-400">@_repoData.StargazersCount</p>
+                        <p class="text-gray-400 text-2xl mt-1">@_repoData.StargazersCount</p>
                     </div>
-                    <div class="bg-[#121D2F] rounded-lg p-4">
+                    <div class="bg-[#121D2F] rounded-lg p-4 text-center">
                         <h3 class="text-lg font-bold text-[#58a6ff]">Forks</h3>
-                        <p class="text-gray-400">@_repoData.ForksCount</p>
+                        <p class="text-gray-400 text-2xl mt-1">@_repoData.ForksCount</p>
                     </div>
-                    <div class="bg-[#121D2F] rounded-lg p-4">
+                    <div class="bg-[#121D2F] rounded-lg p-4 text-center">
                         <h3 class="text-lg font-bold text-[#58a6ff]">Watchers</h3>
-                        <p class="text-gray-400">@_repoData.WatchersCount</p>
+                        <p class="text-gray-400 text-2xl mt-1">@_repoData.WatchersCount</p>
+                    </div>
+                    <div class="bg-[#121D2F] rounded-lg p-4 text-center">
+                        <h3 class="text-lg font-bold text-[#58a6ff]">Open Issues</h3>
+                        <p class="text-gray-400 text-2xl mt-1">@_repoData.OpenIssuesCount</p>
                     </div>
                 </div>
 
-                <div class="my-4">
-                    <h3 class="text-xl font-bold text-[#58a6ff]">Activity Timeline</h3>
-                    <div class="mt-4 space-y-4">
-                        <div class="flex items-center text-sm text-gray-500">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
-                            <span>Created on @(_repoData.CreatedAt.ToString("MMMM dd, yyyy"))</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                    <div class="bg-[#121D2F] rounded-lg p-4">
+                        <h3 class="text-xl font-bold text-[#58a6ff] mb-4">Repository Details</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Primary Language</span>
+                                <span class="flex items-center text-[#58a6ff] space-x-6">
+                                <span class="w-2.5 h-2.5 rounded-full mr-1" style="background-color:@_repoData.Language.GetLanguageBackgroundColor()"></span>
+                                @_repoData.Language
+                            </span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Default Branch</span>
+                                <span class="text-[#58a6ff]">@_repoData.DefaultBranch</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">License</span>
+                                <span class="text-[#58a6ff]">@(_repoData.License?.Name ?? "Not specified")</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Size</span>
+                                <span class="text-[#58a6ff]">@_repoData.Size.FormatSize())</span>
+                            </div>
                         </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
-                            <span>Last updated on @(_repoData.UpdatedAt.ToString("MMMM dd, yyyy"))</span>
-                        </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
-                            <span>Last pushed on @(_repoData.PushedAt.ToString("MMMM dd, yyyy"))</span>
+                    </div>
+
+                    <div class="bg-[#121D2F] rounded-lg p-4">
+                        <h3 class="text-xl font-bold text-[#58a6ff] mb-4">Activity Timeline</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center text-sm">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
+                                <span class="text-gray-400">Created on @_repoData.CreatedAt.FormatDate()</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
+                                <span class="text-gray-400">Last updated @_repoData.UpdatedAt.FormatTimeAgo()</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
+                                <span class="text-gray-400">Last pushed @_repoData.PushedAt.FormatTimeAgo()</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                @if (_repoData.Topics != null && _repoData.Topics.Any())
+                {
+                    <div class="my-4">
+                        <h3 class="text-xl font-bold text-[#58a6ff] mb-2">Topics</h3>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach (var topic in _repoData.Topics)
+                            {
+                                <span class="px-2 py-1 text-xs rounded-full bg-[#1f6feb] text-white">@topic</span>
+                            }
+                        </div>
+                    </div>
+                }
 
                 <div class="my-4">
                     <h3 class="text-xl font-bold text-[#58a6ff]">Repository Stats</h3>
@@ -67,9 +136,7 @@
         {
             <div class="p-4 text-center">
                 <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
-                    <p class="text-[#cf222e]">
-                        Failed to load repository data.
-                    </p>
+                    <p class="text-[#cf222e]">Failed to load repository data.</p>
                 </div>
             </div>
         }
