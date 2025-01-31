@@ -12,18 +12,7 @@
                              @onclick="() => NavigateToProjectDetails(project.Id)">
                     <div class="w-full">
                         <div class="mb-1">
-                            <a href="@project.HtmlUrl" class="text-lg font-bold text-[#58a6ff] hover:underline">
-                                @project.Name
-                            </a>
-
-                            @if (!string.IsNullOrWhiteSpace(project.Homepage))
-                            {
-                                <a href="@project.Homepage" class="text-sm font-medium text-[#58a6ff] hover:underline ml-4" title="Site Link">
-                                    <svg class="inline-block w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M10.59 13.41a1 1 0 010-1.42l4.83-4.83a3 3 0 114.24 4.24l-1.41 1.41a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 00-1.42-1.42l-4.83 4.83a1 1 0 01-1.42 0zM13.41 10.59a1 1 0 010 1.42l-4.83 4.83a3 3 0 11-4.24-4.24l1.41-1.41a1 1 0 011.42 1.42l-1.41 1.41a1 1 0 001.42 1.42l4.83-4.83a1 1 0 011.42 0z"></path>
-                                    </svg>
-                                </a>
-                            }
+                             <span class="text-lg font-bold text-[#58a6ff]">@project.Name</span>
                         </div>
                         <p class="text-gray-400 text-sm">
                             @project.Description
@@ -41,7 +30,7 @@
 
                         <div class="flex items-center text-xs text-gray-500 my-2 space-x-4">
                             <span class="flex items-center">
-                                <span class="w-2.5 h-2.5 rounded-full mr-1" style="background-color:@GetLanguageBackgroundColor(project.Language)"></span>
+                                <span class="w-2.5 h-2.5 rounded-full mr-1" style="background-color:@project.Language.GetLanguageBackgroundColor()"></span>
                                 @project.Language
                             </span>
                             @if(project.StargazersCount > 0)
@@ -54,7 +43,7 @@
                                 </span>
                             }
                             
-                            <span>Updated <relative-time datetime="2024-12-21T12:55:36Z">@GetTimeAgo(project.UpdatedAt)</relative-time></span>
+                            <span>Updated <relative-time datetime="2024-12-21T12:55:36Z">@project.UpdatedAt.GetTimeAgo()</relative-time></span>
                         </div>
                     </div>
                 </div>
