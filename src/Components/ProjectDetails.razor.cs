@@ -27,7 +27,7 @@ public partial class ProjectDetails : ComponentBase
   [Parameter]
   public int Id { get; set; }
 
-  protected override async Task OnInitializedAsync()
+  protected override async Task OnParametersSetAsync()
   {
     if (await _githubClient.GetReposToBeShown() is { } gitHubRepos)
     {
