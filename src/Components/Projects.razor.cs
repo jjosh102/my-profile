@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MyProfile.Models;
+using MyProfile.Services;
 using MyProfile.Services.Github;
 
 namespace MyProfile.Components;
@@ -7,7 +8,7 @@ public partial class Projects : ComponentBase
 {
   private readonly IGithubHttpClient _githubClient;
 
-  private readonly NavigationManager _navigationManager;
+  private readonly NavigationService _naviagtionService;
   private bool _isApiError;
   private IReadOnlyList<GithubRepo>? _githubProjects = [];
   private static readonly Dictionary<string, string> LanguageColors = new(StringComparer.OrdinalIgnoreCase)
@@ -40,11 +41,10 @@ public partial class Projects : ComponentBase
         { "Vue", "#42b883" }
     };
 
-  public Projects(IGithubHttpClient githubClient, NavigationManager navigationManager)
+  public Projects(IGithubHttpClient githubClient, NavigationService navigationService)
   {
     _githubClient = githubClient;
-    _navigationManager = navigationManager;
-
+    _naviagtionService = navigationService;
   }
 
   protected override async Task OnInitializedAsync()
@@ -110,9 +110,8 @@ public partial class Projects : ComponentBase
     return LanguageColors.TryGetValue(language, out var color) ? color : "#cccccc";
   }
 
-  private void NavigateToProjectDetails(int id)
-  {
-    _navigationManager.NavigateTo($"/project-details/{id}");
-  }
+  private void NavigateToProjectDetails(int id) => _naviagtionService.NavigateToProjectDetails(id);
+  
 }
+
 

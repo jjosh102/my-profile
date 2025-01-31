@@ -5,6 +5,7 @@ using MyProfile.Services.Github;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Obaki.LocalStorageCache;
+using MyProfile.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -17,6 +18,7 @@ builder.Services.AddHttpClient<IGithubHttpClient, GithubHttpClient>()
                     }));
 
 builder.Services.AddLocalStorageCacheAsSingleton();
+builder.Services.AddSingleton<NavigationService>();
 if (builder.HostEnvironment.Environment == "Development")
 {
     builder.Logging.SetMinimumLevel(LogLevel.Debug);
