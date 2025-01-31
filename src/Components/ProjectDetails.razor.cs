@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MyProfile.Models;
+using MyProfile.Services;
 using MyProfile.Services.Github;
 
 namespace MyProfile.Components;
@@ -12,15 +13,15 @@ public partial class ProjectDetails : ComponentBase
   private readonly IGithubHttpClient _githubClient;
   private readonly IJSRuntime _jsRuntime;
 
-  private readonly NavigationManager _navigationManager;
+  private readonly NavigationService _navigationService;
 
   private GithubRepo? _repoData;
 
-  public ProjectDetails(IGithubHttpClient githubHttpClient, IJSRuntime jsRuntime, NavigationManager navigationManager)
+  public ProjectDetails(IGithubHttpClient githubHttpClient, IJSRuntime jsRuntime, NavigationService navigationService)
   {
     _githubClient = githubHttpClient;
     _jsRuntime = jsRuntime;
-    _navigationManager = navigationManager;
+    _navigationService = navigationService;
   }
 
   [Parameter]
@@ -48,8 +49,5 @@ public partial class ProjectDetails : ComponentBase
     await _jsRuntime.InvokeVoidAsync("renderRepoStatsChart", ctx, _repoData!.StargazersCount, _repoData.ForksCount, _repoData.WatchersCount);
   }
 
-  private void GoBack()
-  {
-    _navigationManager.NavigateTo("/");
-  }
+  private void GoBack() => _navigationService.GoBack();
 }
