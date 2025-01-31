@@ -1,0 +1,76 @@
+@page "/project-details/{Id:int}"
+
+
+<div class="container mx-auto p-4">
+    <div class="space-y-6">
+        <div class="flex items-center space-x-6">
+            <button @onclick="GoBack"
+                class="flex items-center space-x-2 bg-[#21262d] text-[#58a6ff] border border-[#30363d] px-3 py-1.5 rounded-md hover:bg-[#30363d] transition-colors duration-200">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm font-semibold">Back</span>
+            </button>
+            <h1 class="text-2xl font-semibold text-[#c9d1d9]">Repository Status</h1>
+        </div>
+        @if (_repoData is not null)
+        {
+            <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
+                <h2 class="text-2xl font-bold text-[#58a6ff]">@_repoData.Name</h2>
+                <p class="text-gray-400 text-sm">@_repoData.Description</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                    <div class="bg-[#121D2F] rounded-lg p-4">
+                        <h3 class="text-lg font-bold text-[#58a6ff]">Stargazers</h3>
+                        <p class="text-gray-400">@_repoData.StargazersCount</p>
+                    </div>
+                    <div class="bg-[#121D2F] rounded-lg p-4">
+                        <h3 class="text-lg font-bold text-[#58a6ff]">Forks</h3>
+                        <p class="text-gray-400">@_repoData.ForksCount</p>
+                    </div>
+                    <div class="bg-[#121D2F] rounded-lg p-4">
+                        <h3 class="text-lg font-bold text-[#58a6ff]">Watchers</h3>
+                        <p class="text-gray-400">@_repoData.WatchersCount</p>
+                    </div>
+                </div>
+
+                <div class="my-4">
+                    <h3 class="text-xl font-bold text-[#58a6ff]">Activity Timeline</h3>
+                    <div class="mt-4 space-y-4">
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
+                            <span>Created on @(_repoData.CreatedAt.ToString("MMMM dd, yyyy"))</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
+                            <span>Last updated on @(_repoData.UpdatedAt.ToString("MMMM dd, yyyy"))</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#58a6ff] mr-2"></span>
+                            <span>Last pushed on @(_repoData.PushedAt.ToString("MMMM dd, yyyy"))</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-4">
+                    <h3 class="text-xl font-bold text-[#58a6ff]">Repository Stats</h3>
+                    <div class="mt-4">
+                        <canvas id="repoStatsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="p-4 text-center">
+                <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
+                    <p class="text-[#cf222e]">
+                        Failed to load repository data.
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

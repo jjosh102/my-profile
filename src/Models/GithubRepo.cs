@@ -1,318 +1,330 @@
 using System.Text.Json.Serialization;
-namespace MyProfile.Models;
-   
-    public class License
-    {
-        [JsonPropertyName("key")]
-        public string? Key { get; set; } 
 
-        [JsonPropertyName("name")]
-        public string? Name { get; set; }
+namespace  MyProfile.Models;
 
-        [JsonPropertyName("spdx_id")]
-        public string? SpdxId { get; set; }
-
-        [JsonPropertyName("url")]
-        public string? Url { get; set; }
-
-        [JsonPropertyName("node_id")]
-        public string? NodeId { get; set; }
-    }
-
-    public class Owner
+    public record Owner
     {
         [JsonPropertyName("login")]
-        public string? Login { get; set; }
+        public string Login { get; init; } = string.Empty;
 
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [JsonPropertyName("node_id")]
-        public string? NodeId { get; set; }
+        public string NodeId { get; init; } = string.Empty;
 
         [JsonPropertyName("avatar_url")]
-        public string? AvatarUrl { get; set; }
+        public string AvatarUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("gravatar_id")]
-        public string? GravatarId { get; set; }
+        public string GravatarId { get; init; } = string.Empty;
 
         [JsonPropertyName("url")]
-        public string? Url { get; set; }
+        public string Url { get; init; } = string.Empty;
 
         [JsonPropertyName("html_url")]
-        public string? HtmlUrl { get; set; }
+        public string HtmlUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("followers_url")]
-        public string? FollowersUrl { get; set; }
+        public string FollowersUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("following_url")]
-        public string? FollowingUrl { get; set; }
+        public string FollowingUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("gists_url")]
-        public string? GistsUrl { get; set; }
+        public string GistsUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("starred_url")]
-        public string? StarredUrl { get; set; }
+        public string StarredUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("subscriptions_url")]
-        public string? SubscriptionsUrl { get; set; }
+        public string SubscriptionsUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("organizations_url")]
-        public string? OrganizationsUrl { get; set; }
+        public string OrganizationsUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("repos_url")]
-        public string? ReposUrl { get; set; }
+        public string ReposUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("events_url")]
-        public string? EventsUrl { get; set; }
+        public string EventsUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("received_events_url")]
-        public string? ReceivedEventsUrl { get; set; }
+        public string ReceivedEventsUrl { get; init; } = string.Empty;
 
         [JsonPropertyName("type")]
-        public string? Type { get; set; }
+        public string Type { get; init; } = string.Empty;
+
+        [JsonPropertyName("user_view_type")]
+        public string UserViewType { get; init; } = string.Empty;
 
         [JsonPropertyName("site_admin")]
-        public bool SiteAdmin { get; set; }
+        public bool SiteAdmin { get; init; }
     }
 
-    public class GithubRepo
+    public record License
     {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-
-        [JsonPropertyName("node_id")]
-        public string? NodeId { get; set; }
+        [JsonPropertyName("key")]
+        public string Key { get; init; } = string.Empty;
 
         [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        public string Name { get; init; } = string.Empty;
 
-        [JsonPropertyName("full_name")]
-        public string? FullName { get; set; }
-
-        [JsonPropertyName("private")]
-        public bool Private { get; set; }
-
-        [JsonPropertyName("owner")]
-        public Owner? Owner { get; set; } 
-
-        [JsonPropertyName("html_url")]
-        public string? HtmlUrl { get; set; }
-
-        [JsonPropertyName("description")]
-        public string? Description { get; set; }
-
-        [JsonPropertyName("fork")]
-        public bool Fork { get; set; }
+        [JsonPropertyName("spdx_id")]
+        public string SpdxId { get; init; } = string.Empty;
 
         [JsonPropertyName("url")]
-        public string? Url { get; set; }
+        public string Url { get; init; } = string.Empty;
 
-        [JsonPropertyName("forks_url")]
-        public string? ForksUrl { get; set; }
-
-        [JsonPropertyName("keys_url")]
-        public string? KeysUrl { get; set; }
-
-        [JsonPropertyName("collaborators_url")]
-        public string? CollaboratorsUrl { get; set; }
-
-        [JsonPropertyName("teams_url")]
-        public string? TeamsUrl { get; set; }
-
-        [JsonPropertyName("hooks_url")]
-        public string? HooksUrl { get; set; }
-
-        [JsonPropertyName("issue_events_url")]
-        public string? IssueEventsUrl { get; set; }
-
-        [JsonPropertyName("events_url")]
-        public string? EventsUrl { get; set; }
-
-        [JsonPropertyName("assignees_url")]
-        public string? AssigneesUrl { get; set; }
-
-        [JsonPropertyName("branches_url")]
-        public string? BranchesUrl { get; set; }
-
-        [JsonPropertyName("tags_url")]
-        public string? TagsUrl { get; set; }
-
-        [JsonPropertyName("blobs_url")]
-        public string? BlobsUrl { get; set; }
-
-        [JsonPropertyName("git_tags_url")]
-        public string? GitTagsUrl { get; set; }
-
-        [JsonPropertyName("git_refs_url")]
-        public string? GitRefsUrl { get; set; }
-
-        [JsonPropertyName("trees_url")]
-        public string? TreesUrl { get; set; }
-
-        [JsonPropertyName("statuses_url")]
-        public string? StatusesUrl { get; set; }
-
-        [JsonPropertyName("languages_url")]
-        public string? LanguagesUrl { get; set; }
-
-        [JsonPropertyName("stargazers_url")]
-        public string? StargazersUrl { get; set; }
-
-        [JsonPropertyName("contributors_url")]
-        public string? ContributorsUrl { get; set; }
-
-        [JsonPropertyName("subscribers_url")]
-        public string? SubscribersUrl { get; set; }
-
-        [JsonPropertyName("subscription_url")]
-        public string? SubscriptionUrl { get; set; }
-
-        [JsonPropertyName("commits_url")]
-        public string? CommitsUrl { get; set; }
-
-        [JsonPropertyName("git_commits_url")]
-        public string? GitCommitsUrl { get; set; }
-
-        [JsonPropertyName("comments_url")]
-        public string? CommentsUrl { get; set; }
-
-        [JsonPropertyName("issue_comment_url")]
-        public string? IssueCommentUrl { get; set; }
-
-        [JsonPropertyName("contents_url")]
-        public string? ContentsUrl { get; set; }
-
-        [JsonPropertyName("compare_url")]
-        public string? CompareUrl { get; set; }
-
-        [JsonPropertyName("merges_url")]
-        public string? MergesUrl { get; set; }
-
-        [JsonPropertyName("archive_url")]
-        public string? ArchiveUrl { get; set; }
-
-        [JsonPropertyName("downloads_url")]
-        public string? DownloadsUrl { get; set; }
-
-        [JsonPropertyName("issues_url")]
-        public string? IssuesUrl { get; set; }
-
-        [JsonPropertyName("pulls_url")]
-        public string? PullsUrl { get; set; }
-
-        [JsonPropertyName("milestones_url")]
-        public string? MilestonesUrl { get; set; }
-
-        [JsonPropertyName("notifications_url")]
-        public string? NotificationsUrl { get; set; }
-
-        [JsonPropertyName("labels_url")]
-        public string? LabelsUrl { get; set; }
-
-        [JsonPropertyName("releases_url")]
-        public string? ReleasesUrl { get; set; }
-
-        [JsonPropertyName("deployments_url")]
-        public string? DeploymentsUrl { get; set; }
-
-        [JsonPropertyName("created_at")]
-        public DateTime CreatedAt { get; set; }
-
-        [JsonPropertyName("updated_at")]
-        public DateTime UpdatedAt { get; set; }
-
-        [JsonPropertyName("pushed_at")]
-        public DateTime PushedAt { get; set; }
-
-        [JsonPropertyName("git_url")]
-        public string? GitUrl { get; set; }
-
-        [JsonPropertyName("ssh_url")]
-        public string? SshUrl { get; set; }
-
-        [JsonPropertyName("clone_url")]
-        public string? CloneUrl { get; set; }
-
-        [JsonPropertyName("svn_url")]
-        public string? SvnUrl { get; set; }
-
-        [JsonPropertyName("homepage")]
-        public string? Homepage { get; set; }
-
-        [JsonPropertyName("size")]
-        public int Size { get; set; }
-
-        [JsonPropertyName("stargazers_count")]
-        public int StargazersCount { get; set; }
-
-        [JsonPropertyName("watchers_count")]
-        public int WatchersCount { get; set; }
-
-        [JsonPropertyName("language")]
-        public string? Language { get; set; }
-
-        [JsonPropertyName("has_issues")]
-        public bool HasIssues { get; set; }
-
-        [JsonPropertyName("has_projects")]
-        public bool HasProjects { get; set; }
-
-        [JsonPropertyName("has_downloads")]
-        public bool HasDownloads { get; set; }
-
-        [JsonPropertyName("has_wiki")]
-        public bool HasWiki { get; set; }
-
-        [JsonPropertyName("has_pages")]
-        public bool HasPages { get; set; }
-
-        [JsonPropertyName("has_discussions")]
-        public bool HasDiscussions { get; set; }
-
-        [JsonPropertyName("forks_count")]
-        public int ForksCount { get; set; }
-
-        [JsonPropertyName("mirror_url")]
-        public object? MirrorUrl { get; set; }
-
-        [JsonPropertyName("archived")]
-        public bool Archived { get; set; }
-
-        [JsonPropertyName("disabled")]
-        public bool Disabled { get; set; }
-
-        [JsonPropertyName("open_issues_count")]
-        public int OpenIssuesCount { get; set; }
-
-        [JsonPropertyName("license")]
-        public License? License { get; set; }
-
-        [JsonPropertyName("allow_forking")]
-        public bool AllowForking { get; set; }
-
-        [JsonPropertyName("is_template")]
-        public bool IsTemplate { get; set; }
-
-        [JsonPropertyName("web_commit_signoff_required")]
-        public bool WebCommitSignoffRequired { get; set; }
-
-        [JsonPropertyName("topics")]
-        public List<string> Topics { get; set; } = new();
-
-        [JsonPropertyName("visibility")]
-        public string? Visibility { get; set; }
-
-        [JsonPropertyName("forks")]
-        public int Forks { get; set; }
-
-        [JsonPropertyName("open_issues")]
-        public int OpenIssues { get; set; }
-
-        [JsonPropertyName("watchers")]
-        public int Watchers { get; set; }
-
-        [JsonPropertyName("default_branch")]
-        public string? DefaultBranch { get; set; }
+        [JsonPropertyName("node_id")]
+        public string NodeId { get; init; } = string.Empty;
     }
 
+    public record GithubRepo
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; init; }
+
+        [JsonPropertyName("node_id")]
+        public string NodeId { get; init; } = string.Empty;
+
+        [JsonPropertyName("name")]
+        public string Name { get; init; } = string.Empty;
+
+        [JsonPropertyName("full_name")]
+        public string FullName { get; init; } = string.Empty;
+
+        [JsonPropertyName("private")]
+        public bool Private { get; init; }
+
+        [JsonPropertyName("owner")]
+        public Owner Owner { get; init; } = new();
+
+        [JsonPropertyName("html_url")]
+        public string HtmlUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("description")]
+        public string Description { get; init; } = string.Empty;
+
+        [JsonPropertyName("fork")]
+        public bool Fork { get; init; }
+
+        [JsonPropertyName("url")]
+        public string Url { get; init; } = string.Empty;
+
+        [JsonPropertyName("forks_url")]
+        public string ForksUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("keys_url")]
+        public string KeysUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("collaborators_url")]
+        public string CollaboratorsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("teams_url")]
+        public string TeamsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("hooks_url")]
+        public string HooksUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("issue_events_url")]
+        public string IssueEventsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("events_url")]
+        public string EventsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("assignees_url")]
+        public string AssigneesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("branches_url")]
+        public string BranchesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("tags_url")]
+        public string TagsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("blobs_url")]
+        public string BlobsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("git_tags_url")]
+        public string GitTagsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("git_refs_url")]
+        public string GitRefsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("trees_url")]
+        public string TreesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("statuses_url")]
+        public string StatusesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("languages_url")]
+        public string LanguagesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("stargazers_url")]
+        public string StargazersUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("contributors_url")]
+        public string ContributorsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("subscribers_url")]
+        public string SubscribersUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("subscription_url")]
+        public string SubscriptionUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("commits_url")]
+        public string CommitsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("git_commits_url")]
+        public string GitCommitsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("comments_url")]
+        public string CommentsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("issue_comment_url")]
+        public string IssueCommentUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("contents_url")]
+        public string ContentsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("compare_url")]
+        public string CompareUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("merges_url")]
+        public string MergesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("archive_url")]
+        public string ArchiveUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("downloads_url")]
+        public string DownloadsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("issues_url")]
+        public string IssuesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("pulls_url")]
+        public string PullsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("milestones_url")]
+        public string MilestonesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("notifications_url")]
+        public string NotificationsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("labels_url")]
+        public string LabelsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("releases_url")]
+        public string ReleasesUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("deployments_url")]
+        public string DeploymentsUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("created_at")]
+        public DateTime CreatedAt { get; init; }
+
+        [JsonPropertyName("updated_at")]
+        public DateTime UpdatedAt { get; init; }
+
+        [JsonPropertyName("pushed_at")]
+        public DateTime PushedAt { get; init; }
+
+        [JsonPropertyName("git_url")]
+        public string GitUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("ssh_url")]
+        public string SshUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("clone_url")]
+        public string CloneUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("svn_url")]
+        public string SvnUrl { get; init; } = string.Empty;
+
+        [JsonPropertyName("homepage")]
+        public string Homepage { get; init; } = string.Empty;
+
+        [JsonPropertyName("size")]
+        public int Size { get; init; }
+
+        [JsonPropertyName("stargazers_count")]
+        public int StargazersCount { get; init; }
+
+        [JsonPropertyName("watchers_count")]
+        public int WatchersCount { get; init; }
+
+        [JsonPropertyName("language")]
+        public string Language { get; init; } = string.Empty;
+
+        [JsonPropertyName("has_issues")]
+        public bool HasIssues { get; init; }
+
+        [JsonPropertyName("has_projects")]
+        public bool HasProjects { get; init; }
+
+        [JsonPropertyName("has_downloads")]
+        public bool HasDownloads { get; init; }
+
+        [JsonPropertyName("has_wiki")]
+        public bool HasWiki { get; init; }
+
+        [JsonPropertyName("has_pages")]
+        public bool HasPages { get; init; }
+
+        [JsonPropertyName("has_discussions")]
+        public bool HasDiscussions { get; init; }
+
+        [JsonPropertyName("forks_count")]
+        public int ForksCount { get; init; }
+
+        [JsonPropertyName("mirror_url")]
+        public object MirrorUrl { get; init; } = new();
+
+        [JsonPropertyName("archived")]
+        public bool Archived { get; init; }
+
+        [JsonPropertyName("disabled")]
+        public bool Disabled { get; init; }
+
+        [JsonPropertyName("open_issues_count")]
+        public int OpenIssuesCount { get; init; }
+
+        [JsonPropertyName("license")]
+        public License License { get; init; } = new();
+
+        [JsonPropertyName("allow_forking")]
+        public bool AllowForking { get; init; }
+
+        [JsonPropertyName("is_template")]
+        public bool IsTemplate { get; init; }
+
+        [JsonPropertyName("web_commit_signoff_required")]
+        public bool WebCommitSignoffRequired { get; init; }
+
+        [JsonPropertyName("topics")]
+        public IReadOnlyList<string> Topics { get; init; } = [];
+
+        [JsonPropertyName("visibility")]
+        public string Visibility { get; init; } = string.Empty;
+
+        [JsonPropertyName("forks")]
+        public int Forks { get; init; }
+
+        [JsonPropertyName("open_issues")]
+        public int OpenIssues { get; init; }
+
+        [JsonPropertyName("watchers")]
+        public int Watchers { get; init; }
+
+        [JsonPropertyName("default_branch")]
+        public string DefaultBranch { get; init; } = string.Empty;
+
+        [JsonPropertyName("temp_clone_token")]
+        public object TempCloneToken { get; init; } = new();
+
+        [JsonPropertyName("network_count")]
+        public int NetworkCount { get; init; }
+
+        [JsonPropertyName("subscribers_count")]
+        public int SubscribersCount { get; init; }
+    }

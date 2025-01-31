@@ -6,6 +6,8 @@ namespace MyProfile.Components;
 public partial class Projects : ComponentBase
 {
   private readonly IGithubHttpClient _githubClient;
+
+  private readonly NavigationManager _navigationManager;
   private bool _isApiError;
   private IReadOnlyList<GithubRepo>? _githubProjects = [];
   private static readonly Dictionary<string, string> LanguageColors = new(StringComparer.OrdinalIgnoreCase)
@@ -38,15 +40,19 @@ public partial class Projects : ComponentBase
         { "Vue", "#42b883" }
     };
 
-  public Projects(IGithubHttpClient githubClient) => _githubClient = githubClient;
+  public Projects(IGithubHttpClient githubClient, NavigationManager navigationManager)
+  {
+    _githubClient = githubClient;
+    _navigationManager = navigationManager;
 
+  }
 
   protected override async Task OnInitializedAsync()
   {
-    if (await _githubClient.GetReposToBeShown() is { } apiResult)
+    if (await _githubClient.GetReposToBeShown() is { } gitHubRepos)
     {
-      _githubProjects = apiResult.Value;
-      _isApiError = apiResult.IsFailure;
+      _githubProjects = gitHubRepos.Value;
+      _isApiError = gitHubRepos.IsFailure;
     }
   }
 
@@ -102,6 +108,11 @@ public partial class Projects : ComponentBase
       return "#cccccc";
     }
     return LanguageColors.TryGetValue(language, out var color) ? color : "#cccccc";
+  }
+
+  private void NavigateToProjectDetails(int id)
+  {
+    _navigationManager.NavigateTo($"/project-details/{id}");
   }
 }
 
