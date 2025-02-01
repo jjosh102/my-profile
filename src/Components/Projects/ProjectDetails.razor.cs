@@ -6,7 +6,7 @@ using MyProfile.Models;
 using MyProfile.Services;
 using MyProfile.Services.Github;
 
-namespace MyProfile.Components;
+namespace MyProfile.Components.Projects;
 
 public partial class ProjectDetails : ComponentBase
 {

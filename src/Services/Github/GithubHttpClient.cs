@@ -16,30 +16,42 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         _httpClient.BaseAddress = new Uri(GithubConstants.BaseAddress);
         _localStorageCache = localStorageCache;
     }
-    public async Task<Result<GithubLastCommit>> GetRepoLastCommit(string repoName)
+    public async Task<Result<IReadOnlyList<CommitDisplay>>> GetCommitsForRepoAsync(string repoName)
     {
-        if (string.IsNullOrWhiteSpace(repoName))
-        {
-            throw new ArgumentNullException(nameof(repoName));
-        }
+        //todo: simplify constant usage
+        var cacheKey = $"{GithubConstants.Commits}-{repoName}";
+        var cache = await _localStorageCache.GetOrCreateCacheAsync(
+            cacheKey,
+            TimeSpan.FromHours(1),
+            async () =>
+            {
+                var response = await _httpClient.GetAsync($"{GithubConstants.GetCommits.Endpoint}/{repoName}/{GithubConstants.Commits}").ConfigureAwait(false);
 
-        var uriRequest = $"repos/jjosh102/{repoName}/git/refs/heads/master";
-        var response = await _httpClient.GetAsync(uriRequest).ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Result.Fail<IReadOnlyList<CommitDisplay>>(Error.HttpError(response.StatusCode.ToString()));
+                }
 
-        if (!response.IsSuccessStatusCode)
-        {
-            return Result.Fail<GithubLastCommit>(Error.HttpError(response.StatusCode.ToString()));
-        }
+                var commits = await response.Content.ReadFromJsonAsync<IReadOnlyList<GithubCommit>>().ConfigureAwait(false);
 
-        var result = await response.Content.ReadFromJsonAsync<GithubLastCommit>().ConfigureAwait(false);
+                if (commits is null)
+                {
+                    return Result.Fail<IReadOnlyList<CommitDisplay>>(Error.EmptyValue);
+                }
 
-        if (result is null)
-        {
-            Result.Fail(Error.EmptyValue);
-        }
+                var commitDisplays = commits.Select(c => new CommitDisplay
+                {
+                    AuthorName = c.Commit.Committer.Name,
+                    AuthorAvatarUrl = c.Author?.AvatarUrl ?? string.Empty,
+                    CommitDate = c.Commit.Committer.Date,
+                    Message = c.Commit.Message,
+                    CommitUrl = c.HtmlUrl
+                }).ToList();
 
-        return Result.Success(result!);
+                return Result.Success<IReadOnlyList<CommitDisplay>>(commitDisplays);
+            });
 
+        return cache ?? Result.Fail<IReadOnlyList<CommitDisplay>>(Error.EmptyValue);
     }
 
     public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()

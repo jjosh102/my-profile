@@ -1,0 +1,106 @@
+@page "/activity-timeline/{repoName}"
+@inject IGithubHttpClient GithubHttpClient
+
+<div class="mx-auto p-4">
+  <div class="space-y-6">
+    <h1 class="text-2xl font-semibold text-[#c9d1d9]">Activity Timeline for @RepoName</h1>
+
+    @if (_isLoading)
+    {
+      <div class="space-y-4">
+        @for (int i = 0; i < 3; i++)
+        {
+          <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-4">
+            <div class="animate-pulse flex space-x-4">
+              <div class="rounded-full bg-[#30363d] h-10 w-10"></div>
+              <div class="flex-1 space-y-2">
+                <div class="h-4 bg-[#30363d] rounded w-3/4"></div>
+                <div class="h-4 bg-[#30363d] rounded"></div>
+                <div class="h-4 bg-[#30363d] rounded w-1/2"></div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+    else if (_commits.Any())
+    {
+      <div class="space-y-4">
+        @foreach (var commit in _visibleCommits)
+        {
+          <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-4">
+           
+            <div class="flex flex-col md:flex-row justify-between items-start space-y-3 md:space-y-0">
+           
+              <div class="flex items-center space-x-3">
+                <img class="w-8 h-8 rounded-full" src="@commit.AuthorAvatarUrl" alt="@commit.AuthorName" />
+                <div>
+                  <p class="text-sm font-semibold text-[#c9d1d9]">@commit.AuthorName</p>
+                  <p class="text-xs text-gray-400">@commit.CommitDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                </div>
+              </div>
+
+         
+              <a href="@commit.CommitUrl" target="_blank" rel="noopener noreferrer"
+                class="text-sm text-[#58a6ff] hover:underline whitespace-nowrap">
+                View Commit
+              </a>
+            </div>
+
+            <p class="mt-2 text-sm text-gray-400">@commit.Message</p>
+          </div>
+        }
+
+        @if (_commits.Count > 5)
+        {
+          <button @onclick="ToggleExpand"
+            class="w-full bg-[#21262d] text-[#c9d1d9] border border-[#30363d] px-4 py-2 rounded-md hover:bg-[#30363d] transition-colors duration-200">
+            @(_showAll ? "Show Less" : "Show More")
+          </button>
+        }
+      </div>
+    }
+    else
+    {
+      <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4 text-center">
+        <p class="text-[#cf222e]">No commits found for this repository.</p>
+      </div>
+    }
+  </div>
+</div>
+@code {
+  [Parameter]
+  public string RepoName { get; set; } = string.Empty;
+
+  private IReadOnlyList<CommitDisplay> _commits = [];
+  private IReadOnlyList<CommitDisplay> _visibleCommits = [];
+  private bool _isLoading = true;
+  private bool _showAll = false;
+
+  protected override async Task OnParametersSetAsync()
+  {
+    _isLoading = true;
+    _commits = await FetchCommits(RepoName);
+    UpdateVisibleCommits();
+    _isLoading = false;
+  }
+
+  private async Task<IReadOnlyList<CommitDisplay>> FetchCommits(string repoName)
+  {
+
+    if (await GithubHttpClient.GetCommitsForRepoAsync(repoName) is { } commits)
+    {
+      return commits.Value ?? [];
+    }
+    return [];
+  }
+
+  private void UpdateVisibleCommits() => _visibleCommits = _showAll ? _commits : _commits.Take(5).ToList();
+
+  private void ToggleExpand()
+  {
+    _showAll = !_showAll;
+    UpdateVisibleCommits();
+  }
+
+}
