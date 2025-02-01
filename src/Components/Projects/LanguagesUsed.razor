@@ -1,0 +1,44 @@
+@inject HttpClient Http
+
+<div class="my-4">
+  <h3 class="text-sm font-bold text-[#c9d1d9] mb-2">Languages Used</h3>
+  <div class="flex flex-wrap gap-2">
+    @if (_languages.Any())
+    {
+      @foreach (var language in _languages)
+      {
+        <div class="flex items-center space-x-1 text-[#c9d1d9]">
+          <span class="w-2 h-2 rounded-full" style="background-color:@language.Key.GetLanguageBackgroundColor();"></span>
+          <span class="text-sm">@language.Key</span>
+        </div>
+      }
+    }
+    else
+    {
+      <p class="text-gray-400">Loading languages...</p>
+    }
+  </div>
+</div>
+
+@code {
+  [Parameter]
+  public string RepoName { get; set; } = string.Empty;
+
+  private Dictionary<string, int> _languages = [];
+
+  protected override async Task OnParametersSetAsync()
+  {
+    await FetchLanguages();
+  }
+
+  private async Task FetchLanguages()
+  {
+    // Save in local storage?
+    var response = await Http.GetFromJsonAsync<Dictionary<string,
+    int>>($"https://api.github.com/repos/jjosh102/{RepoName}/languages");
+    if (response is not null)
+    {
+      _languages = response;
+    }
+  }
+}

@@ -833,6 +833,12 @@ video {
   gap: 0.75rem;
 }
 
+.space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -961,11 +967,6 @@ video {
 .bg-\[\#161b22\] {
   --tw-bg-opacity: 1;
   background-color: rgb(22 27 34 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#1f6feb\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(31 111 235 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#21262d\] {
