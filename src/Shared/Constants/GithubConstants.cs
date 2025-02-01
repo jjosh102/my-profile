@@ -4,6 +4,7 @@ public static class GithubConstants
 
     public const string BaseAddress = "https://api.github.com";
     public const string HttpNameClient = "GithubHttpClient";
+    public const string Commits = "commits";
 
     public static class GetRepos
     {
@@ -13,11 +14,9 @@ public static class GithubConstants
 
     }
 
-    public static class GetLastCommit
+    public static class GetCommits
     {
-        public const string CacheDataKey = "obaki-site-github-getlastcommit-cachedata";
-
-        public const string Url = "https://github.com/jjosh102/MyProfile/commit/";
+        public const string Endpoint = "repos/jjosh102";
     }
 
 }

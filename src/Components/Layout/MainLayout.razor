@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@inject IGithubHttpClient GitHubClient
 
 <div class="min-h-screen flex flex-col">
     <header class="bg-[#0d1117] py-4">
@@ -59,17 +58,4 @@
     </footer>
 </div>
 
-@code {
-    private GithubLastCommit? githubLastCommit;
-    private string lastCommitUrl = string.Empty;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var lastCommitResult = await GitHubClient.GetRepoLastCommit(GithubConstants.GetRepos.Name);
-        if (lastCommitResult.IsSuccess && lastCommitResult.Value is not null)
-        {
-            githubLastCommit = lastCommitResult.Value;
-            lastCommitUrl = $"{GithubConstants.GetLastCommit.Url}{githubLastCommit.Object.Sha}";
-        }
-    }
-}

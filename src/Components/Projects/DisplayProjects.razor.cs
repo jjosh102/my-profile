@@ -3,8 +3,8 @@ using MyProfile.Models;
 using MyProfile.Services;
 using MyProfile.Services.Github;
 
-namespace MyProfile.Components;
-public partial class Projects : ComponentBase
+namespace MyProfile.Components.Projects;
+public partial class DisplayProjects : ComponentBase
 {
   private readonly IGithubHttpClient _githubClient;
 
@@ -12,7 +12,7 @@ public partial class Projects : ComponentBase
   private bool _isApiError;
   private IReadOnlyList<GithubRepo>? _githubProjects = [];
   
-  public Projects(IGithubHttpClient githubClient, NavigationService navigationService)
+  public DisplayProjects(IGithubHttpClient githubClient, NavigationService navigationService)
   {
     _githubClient = githubClient;
     _naviagtionService = navigationService;
