@@ -38,6 +38,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
             return Result.Fail<T>(Error.HttpError(ex.Message));
         }
     }
