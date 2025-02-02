@@ -6,6 +6,8 @@ public static class GithubConstants
     public const string HttpNameClient = "GithubHttpClient";
     public const string Commits = "commits";
 
+     public const string CodeFrequency = "code-frequency";
+
     public static class GetRepos
     {
         public const string CacheDataKey = "obaki-site-github-getrepos-cachedata";

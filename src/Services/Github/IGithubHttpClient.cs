@@ -4,6 +4,7 @@ namespace MyProfile.Services.Github;
 
 public interface IGithubHttpClient
 {
-    public Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown();
-    public Task<Result<IReadOnlyList<CommitDisplay>>> GetCommitsForRepoAsync(string repoName);
+    Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown();
+    Task<Result<IReadOnlyList<CommitDisplay>>> GetCommitsForRepoAsync(string repoName);
+    Task<Result<IReadOnlyList<int[]>>> GetCodeFrequencyStatsAsync(string repoName);
 }
