@@ -3,7 +3,7 @@
 <div class="my-4">
   <h3 class="text-sm font-bold text-[#c9d1d9] mb-2">Languages Used</h3>
   <div class="flex flex-wrap gap-2">
-    @if (_languages is not null)
+    @if (_languages is not null && _languages.Any())
     {
       @foreach (var language in _languages)
       {
