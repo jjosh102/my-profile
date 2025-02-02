@@ -1,35 +1,58 @@
-function getChartContext(canvasId) {
-  const canvas = document.getElementById(canvasId);
-  return canvas.getContext('2d');
-}
+function renderCodeFrequencyChart(weeks, additions, deletions) {
+  const ctx = document.getElementById('codeFrequencyChart').getContext('2d');
 
-function renderRepoStatsChart(ctx, stargazers, forks, watchers) {
   new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Stargazers', 'Forks', 'Watchers'],
-      datasets: [{
-        label: 'Count',
-        data: [stargazers, forks, watchers],
-        backgroundColor: [
-          'rgba(88, 166, 255, 0.2)',
-          'rgba(240, 118, 19, 0.2)',  
-          'rgba(163, 113, 247, 0.2)' 
-        ],
-        borderColor: [
-          'rgba(88, 166, 255, 1)',   
-          'rgba(240, 118, 19, 1)',   
-          'rgba(163, 113, 247, 1)'    
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+      type: 'bar',
+      data: {
+          labels: weeks,
+          datasets: [
+              {
+                  label: 'Additions',
+                  data: additions,
+                  backgroundColor: 'rgba(46, 160, 67, 0.2)', 
+                  borderColor: 'rgba(46, 160, 67, 1)',
+                  borderWidth: 1
+              },
+              {
+                  label: 'Deletions',
+                  data: deletions,
+                  backgroundColor: 'rgba(248, 81, 73, 0.2)', 
+                  borderColor: 'rgba(248, 81, 73, 1)',
+                  borderWidth: 1
+              }
+          ]
+      },
+      options: {
+          scales: {
+              x: {
+                  stacked: true
+              },
+              y: {
+                  stacked: true,
+                  beginAtZero: true,
+                  ticks: {
+                      callback: function (value) {
+                          return Math.abs(value); 
+                      }
+                  }
+              }
+          },
+          plugins: {
+              tooltip: {
+                  callbacks: {
+                      label: function (context) {
+                          let label = context.dataset.label || '';
+                          if (label) {
+                              label += ': ';
+                          }
+                          if (context.parsed.y !== null) {
+                              label += Math.abs(context.parsed.y); 
+                          }
+                          return label;
+                      }
+                  }
+              }
+          }
       }
-    }
   });
 }
