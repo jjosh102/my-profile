@@ -7,6 +7,7 @@ public static class GithubConstants
     public const string Commits = "commits";
     public const string CodeFrequency = "code-frequency";
     public const string Languages = "languages";
+    public const string ProxyApi = "https://obaki-core.onrender.com/api/v1/github-proxy";
 
     public static class GetRepos
     {
