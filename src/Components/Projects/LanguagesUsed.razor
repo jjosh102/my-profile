@@ -1,9 +1,9 @@
-@inject HttpClient Http
+@inject IGithubHttpClient GithubHttpClient
 
 <div class="my-4">
   <h3 class="text-sm font-bold text-[#c9d1d9] mb-2">Languages Used</h3>
   <div class="flex flex-wrap gap-2">
-    @if (_languages.Any())
+    @if (_languages is not null)
     {
       @foreach (var language in _languages)
       {
@@ -15,7 +15,10 @@
     }
     else
     {
-      <p class="text-gray-400">Loading languages...</p>
+      <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4 text-center">
+        <p class="text-[#cf222e] font-semibold text-lg mb-2">No data available.</p>
+        <p class="text-[#8b949e] text-sm">Please check back later or try refreshing the page.</p>
+      </div>
     }
   </div>
 </div>
@@ -26,19 +29,16 @@
 
   private Dictionary<string, int> _languages = [];
 
-  protected override async Task OnParametersSetAsync()
-  {
-    await FetchLanguages();
-  }
+  protected override async Task OnParametersSetAsync() => await FetchLanguages();
 
   private async Task FetchLanguages()
   {
-    // Save in local storage?
-    var response = await Http.GetFromJsonAsync<Dictionary<string,
-    int>>($"https://api.github.com/repos/jjosh102/{RepoName}/languages");
-    if (response is not null)
+
+    if (await GithubHttpClient.GetLanguagesUsedAsync(RepoName) is { } result
+    && result.IsSuccess
+    && result.Value is not null)
     {
-      _languages = response;
+      _languages = result.Value;
     }
   }
 }

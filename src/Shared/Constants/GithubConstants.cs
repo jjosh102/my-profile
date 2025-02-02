@@ -5,8 +5,8 @@ public static class GithubConstants
     public const string BaseAddress = "https://api.github.com";
     public const string HttpNameClient = "GithubHttpClient";
     public const string Commits = "commits";
-
-     public const string CodeFrequency = "code-frequency";
+    public const string CodeFrequency = "code-frequency";
+    public const string Languages = "languages";
 
     public static class GetRepos
     {
