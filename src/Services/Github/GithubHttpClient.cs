@@ -77,4 +77,11 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         var endpoint = $"{GithubConstants.BaseAddress}/repos/jjosh102/{repoName}/stats/code_frequency";
         return FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
     }
+
+    public Task<Result<Dictionary<string, int>>> GetLanguagesUsedAsync(string repoName)
+    {
+        var cacheKey = $"{GithubConstants.Languages}-{repoName}";
+        var endpoint = $"{GithubConstants.GetCommits.Endpoint}/{repoName}/{GithubConstants.Languages}";
+        return FetchAndCacheAsync<Dictionary<string, int>>(cacheKey, endpoint, TimeSpan.FromHours(1));
+    }
 }
