@@ -13,7 +13,6 @@ internal sealed class GithubHttpClient : IGithubHttpClient
     public GithubHttpClient(HttpClient httpClient, ILocalStorageCache localStorageCache)
     {
         _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri(GithubConstants.BaseAddress);
         _localStorageCache = localStorageCache;
     }
 
@@ -26,7 +25,19 @@ internal sealed class GithubHttpClient : IGithubHttpClient
                 cacheDuration,
                 async () =>
                 {
-                    var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
+                    var url = $"{GithubConstants.BaseAddress}/{endpoint}";
+                    var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
+
+                    // If the rate limit is exceeded, use the proxy API to fetch the data
+                    // This will take a while since the proxy API has a chance to wait for a cold start
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden &&
+                            response.Headers.Contains("X-RateLimit-Remaining") &&
+                            response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0")
+                    {
+                        var proxyUrl = $"{GithubConstants.ProxyApi}?url={url}";
+                        response = await _httpClient.GetAsync(proxyUrl).ConfigureAwait(false);
+                    }
+
                     if (!response.IsSuccessStatusCode)
                     {
                         return Result.Fail<T>(Error.HttpError(response.StatusCode.ToString()));
@@ -38,7 +49,6 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             return Result.Fail<T>(Error.HttpError(ex.Message));
         }
     }
@@ -75,7 +85,8 @@ internal sealed class GithubHttpClient : IGithubHttpClient
     public Task<Result<IReadOnlyList<int[]>>> GetCodeFrequencyStatsAsync(string repoName)
     {
         var cacheKey = $"{GithubConstants.CodeFrequency}-{repoName}";
-        var endpoint = $"{GithubConstants.BaseAddress}/repos/jjosh102/{repoName}/stats/code_frequency";
+        var endpoint = $"repos/jjosh102/{repoName}/stats/code_frequency";
+        Console.WriteLine($"Fetching data from {endpoint}...");
         return FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
     }
 
