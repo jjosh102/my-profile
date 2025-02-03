@@ -1,15 +1,21 @@
 using System.Net.Http.Json;
 using MyProfile.Models;
-using MyProfile.Shared.Constants;
 using Obaki.LocalStorageCache;
 
 namespace MyProfile.Services.Github;
 
 internal sealed class GithubHttpClient : IGithubHttpClient
 {
+    public const string BaseAddress = "https://api.github.com";
+    public const string CommitsEndpoint = "commits";
+    public const string CodeFrequencyEndpoint = "code-frequency";
+    public const string LanguagesEndpoint = "languages";
+    public const string ProxyApi = "https://obaki-core.onrender.com/api/v1/github-proxy";
+    public const string ReposEndpoint = "repos";
+    public const string UserReposEndpoint = "users/jjosh102/repos";
+    public const string RepoEndpoint = "repos/jjosh102";
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageCache _localStorageCache;
-
 
     public GithubHttpClient(HttpClient httpClient, ILocalStorageCache localStorageCache)
     {
@@ -26,7 +32,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
                 cacheDuration,
                 async () =>
                 {
-                    var url = $"{GithubConstants.BaseAddress}/{endpoint}";
+                    var url = $"{BaseAddress}/{endpoint}";
                     var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
                     // If the rate limit is exceeded, use the proxy API to fetch the data
@@ -35,7 +41,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
                             response.Headers.Contains("X-RateLimit-Remaining") &&
                             response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0")
                     {
-                        var proxyUrl = $"{GithubConstants.ProxyApi}?url={url}";
+                        var proxyUrl = $"{ProxyApi}?url={url}";
                         response = await _httpClient.GetAsync(proxyUrl).ConfigureAwait(false);
                     }
 
@@ -56,8 +62,8 @@ internal sealed class GithubHttpClient : IGithubHttpClient
 
     public async Task<Result<IReadOnlyList<CommitDisplay>>> GetCommitsForRepoAsync(string repoName)
     {
-        var cacheKey = $"{GithubConstants.Commits}-{repoName}";
-        var endpoint = $"{GithubConstants.GetCommits.Endpoint}/{repoName}/{GithubConstants.Commits}";
+        var cacheKey = $"{CommitsEndpoint}-{repoName}";
+        var endpoint = $"{RepoEndpoint}/{repoName}/{CommitsEndpoint}";
 
         var result = await FetchAndCacheAsync<IReadOnlyList<GithubCommit>>(cacheKey, endpoint, TimeSpan.FromHours(1));
         if (result.IsFailure || result.Value is null)
@@ -79,8 +85,8 @@ internal sealed class GithubHttpClient : IGithubHttpClient
 
     public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()
     {
-        var result = await FetchAndCacheAsync<IReadOnlyList<GithubRepo>>(GithubConstants.GetRepos.CacheDataKey,
-            GithubConstants.GetRepos.Endpoint, TimeSpan.FromHours(1));
+        var result = await FetchAndCacheAsync<IReadOnlyList<GithubRepo>>(ReposEndpoint,
+            UserReposEndpoint, TimeSpan.FromHours(1));
 
         if (result.IsFailure || result.Value is null)
         {
@@ -92,15 +98,16 @@ internal sealed class GithubHttpClient : IGithubHttpClient
 
     public async Task<Result<IReadOnlyList<int[]>>> GetCodeFrequencyStatsAsync(string repoName)
     {
-        var cacheKey = $"{GithubConstants.CodeFrequency}-{repoName}";
-        var endpoint = $"repos/jjosh102/{repoName}/stats/code_frequency";
+        var cacheKey = $"{CodeFrequencyEndpoint}-{repoName}";
+        var endpoint = $"{RepoEndpoint}/{repoName}/stats/code_frequency";
+        Console.WriteLine("Fetching commits for repo: " + endpoint);
         return await FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
     }
 
     public async Task<Result<Dictionary<string, int>>> GetLanguagesUsedAsync(string repoName)
     {
-        var cacheKey = $"{GithubConstants.Languages}-{repoName}";
-        var endpoint = $"{GithubConstants.GetCommits.Endpoint}/{repoName}/{GithubConstants.Languages}";
+        var cacheKey = $"{LanguagesEndpoint}-{repoName}";
+        var endpoint = $"{RepoEndpoint}/{repoName}/{LanguagesEndpoint}";
         return await FetchAndCacheAsync<Dictionary<string, int>>(cacheKey, endpoint, TimeSpan.FromHours(1));
     }
 }
