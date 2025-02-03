@@ -86,7 +86,6 @@ internal sealed class GithubHttpClient : IGithubHttpClient
     {
         var cacheKey = $"{GithubConstants.CodeFrequency}-{repoName}";
         var endpoint = $"repos/jjosh102/{repoName}/stats/code_frequency";
-        Console.WriteLine($"Fetching data from {endpoint}...");
         return FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
     }
 
