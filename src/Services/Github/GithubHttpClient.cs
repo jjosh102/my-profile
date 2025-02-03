@@ -10,13 +10,14 @@ internal sealed class GithubHttpClient : IGithubHttpClient
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageCache _localStorageCache;
 
+
     public GithubHttpClient(HttpClient httpClient, ILocalStorageCache localStorageCache)
     {
         _httpClient = httpClient;
         _localStorageCache = localStorageCache;
     }
 
-    private async Task<Result<T>> FetchAndCacheAsync<T>(string cacheKey, string endpoint, TimeSpan cacheDuration, Func<T, T>? transform = null)
+    private async Task<Result<T>> FetchAndCacheAsync<T>(string cacheKey, string endpoint, TimeSpan cacheDuration)
     {
         try
         {
@@ -44,7 +45,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
                     }
 
                     var data = await response.Content.ReadFromJsonAsync<T>().ConfigureAwait(false);
-                    return data is null ? Result.Fail<T>(Error.EmptyValue) : Result.Success(transform != null ? transform(data) : data);
+                    return data is null ? Result.Fail<T>(Error.EmptyValue) : Result.Success(data);
                 }) ?? Result.Fail<T>(Error.EmptyValue);
         }
         catch (Exception ex)
@@ -59,7 +60,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         var endpoint = $"{GithubConstants.GetCommits.Endpoint}/{repoName}/{GithubConstants.Commits}";
 
         var result = await FetchAndCacheAsync<IReadOnlyList<GithubCommit>>(cacheKey, endpoint, TimeSpan.FromHours(1));
-        if (!result.IsSuccess || result.Value is null)
+        if (result.IsFailure || result.Value is null)
         {
             return Result.Fail<IReadOnlyList<CommitDisplay>>(result.Error);
         }
@@ -76,23 +77,30 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         return Result.Success<IReadOnlyList<CommitDisplay>>(commits);
     }
 
-    public Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()
+    public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()
     {
-        return FetchAndCacheAsync<IReadOnlyList<GithubRepo>>(GithubConstants.GetRepos.CacheDataKey, GithubConstants.GetRepos.Endpoint, TimeSpan.FromHours(1),
-            repos => repos.Where(t => t.Topics.Contains("show")).OrderByDescending(t => t.UpdatedAt).ToList());
+        var result = await FetchAndCacheAsync<IReadOnlyList<GithubRepo>>(GithubConstants.GetRepos.CacheDataKey,
+            GithubConstants.GetRepos.Endpoint, TimeSpan.FromHours(1));
+
+        if (result.IsFailure || result.Value is null)
+        {
+            return Result.Fail<IReadOnlyList<GithubRepo>>(Error.EmptyValue);
+        }
+
+        return Result.Success<IReadOnlyList<GithubRepo>>(result.Value.Where(t => t.Topics.Contains("show")).OrderByDescending(t => t.UpdatedAt).ToList());
     }
 
-    public Task<Result<IReadOnlyList<int[]>>> GetCodeFrequencyStatsAsync(string repoName)
+    public async Task<Result<IReadOnlyList<int[]>>> GetCodeFrequencyStatsAsync(string repoName)
     {
         var cacheKey = $"{GithubConstants.CodeFrequency}-{repoName}";
         var endpoint = $"repos/jjosh102/{repoName}/stats/code_frequency";
-        return FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
+        return await FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
     }
 
-    public Task<Result<Dictionary<string, int>>> GetLanguagesUsedAsync(string repoName)
+    public async Task<Result<Dictionary<string, int>>> GetLanguagesUsedAsync(string repoName)
     {
         var cacheKey = $"{GithubConstants.Languages}-{repoName}";
         var endpoint = $"{GithubConstants.GetCommits.Endpoint}/{repoName}/{GithubConstants.Languages}";
-        return FetchAndCacheAsync<Dictionary<string, int>>(cacheKey, endpoint, TimeSpan.FromHours(1));
+        return await FetchAndCacheAsync<Dictionary<string, int>>(cacheKey, endpoint, TimeSpan.FromHours(1));
     }
 }
