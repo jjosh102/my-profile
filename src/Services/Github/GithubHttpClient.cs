@@ -3,6 +3,7 @@ using System.Text.Json;
 using MyProfile.Models;
 using Obaki.LocalStorageCache;
 using Polly;
+using Polly.Contrib.WaitAndRetry;
 
 namespace MyProfile.Services.Github;
 
@@ -109,9 +110,12 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         var endpoint = $"{RepoEndpoint}/{repoName}/stats/code_frequency";
 
         // We will try to fetch the data 5 times, allowing GitHub to process the stats data for the first time
+        // The delay will start with 3 seconds and increase linearly with each retry
+        var delay = Backoff.LinearBackoff(TimeSpan.FromSeconds(3),5);
+
         var policy = Policy
             .HandleResult<Result<IReadOnlyList<int[]>>>(result => result is null || result.IsFailure || result.Value is null)
-            .WaitAndRetryAsync(5, _ => TimeSpan.FromSeconds(5));
+            .WaitAndRetryAsync(delay);
 
         var result = await policy.ExecuteAsync(() =>
             FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1)));
