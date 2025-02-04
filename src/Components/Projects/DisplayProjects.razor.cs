@@ -22,7 +22,6 @@ public partial class DisplayProjects : ComponentBase
     if (await _githubClient.GetReposToBeShown() is { } gitHubRepos)
     {
       _githubProjects = gitHubRepos.Value;
-      _isApiError = gitHubRepos.IsFailure;
     }
   }
 
