@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using MyProfile.Models;
 using Obaki.LocalStorageCache;
 
@@ -38,8 +39,8 @@ internal sealed class GithubHttpClient : IGithubHttpClient
                     // If the rate limit is exceeded, use the proxy API to fetch the data
                     // This will take a while since the proxy API has a chance to wait for a cold start
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden &&
-                            response.Headers.Contains("X-RateLimit-Remaining") &&
-                            response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0")
+                         response.Headers.Contains("X-RateLimit-Remaining") &&
+                         response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0")
                     {
                         var proxyUrl = $"{ProxyApi}?url={url}";
                         response = await _httpClient.GetAsync(proxyUrl).ConfigureAwait(false);
@@ -53,6 +54,10 @@ internal sealed class GithubHttpClient : IGithubHttpClient
                     var data = await response.Content.ReadFromJsonAsync<T>().ConfigureAwait(false);
                     return data is null ? Result.Fail<T>(Error.EmptyValue) : Result.Success(data);
                 }) ?? Result.Fail<T>(Error.EmptyValue);
+        }
+        catch (JsonException)
+        {
+            return Result.Fail<T>(Error.EmptyValue);
         }
         catch (Exception ex)
         {
@@ -93,15 +98,36 @@ internal sealed class GithubHttpClient : IGithubHttpClient
             return Result.Fail<IReadOnlyList<GithubRepo>>(Error.EmptyValue);
         }
 
-        return Result.Success<IReadOnlyList<GithubRepo>>(result.Value.Where(t => t.Topics.Contains("show")).OrderByDescending(t => t.UpdatedAt).ToList());
+        return Result.Success<IReadOnlyList<GithubRepo>>(result.Value.Where(t => t.Topics.Contains("show"))
+            .OrderByDescending(t => t.UpdatedAt).ToList());
     }
 
     public async Task<Result<IReadOnlyList<int[]>>> GetCodeFrequencyStatsAsync(string repoName)
     {
         var cacheKey = $"{CodeFrequencyEndpoint}-{repoName}";
         var endpoint = $"{RepoEndpoint}/{repoName}/stats/code_frequency";
-        Console.WriteLine("Fetching commits for repo: " + endpoint);
-        return await FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
+        const int maxAttempts = 3;
+        
+         Result<IReadOnlyList<int[]>>? result = null;
+         
+         // We will try to fetch the data 3 times, allowing GitHub to process the stats data for the first time
+        for (int attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            result = await FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
+
+            if (result is { IsSuccess: true, Value: not null })
+                break;
+
+            if (attempt < maxAttempts)
+                await Task.Delay(TimeSpan.FromSeconds(2));
+        }
+        
+        if (result is null || result.IsFailure || result.Value is null)
+        {
+            return Result.Fail<IReadOnlyList<int[]>>(Error.EmptyValue);
+        }
+
+        return result;
     }
 
     public async Task<Result<Dictionary<string, int>>> GetLanguagesUsedAsync(string repoName)

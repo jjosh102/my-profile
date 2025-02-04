@@ -8,7 +8,7 @@
     <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4 text-center">
       <p class="text-[#8b949e] text-sm animate-pulse">Loading chart..</p>
     </div>
-
+  
   }
   else if (_codeFrequencyData.Any())
   {
@@ -22,11 +22,12 @@
       <p class="text-[#cf222e]">No data available.</p>
     </div>
   }
+
+ 
 </div>
 
 @code {
-  [Parameter]
-  public string RepoName { get; set; } = string.Empty;
+  [Parameter] public string RepoName { get; set; } = string.Empty;
 
   private IReadOnlyList<int[]> _codeFrequencyData = [];
 
@@ -35,7 +36,6 @@
   protected override async Task OnParametersSetAsync()
   {
     await LoadCodeFrequencyData();
-
   }
 
   protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -44,14 +44,13 @@
     {
       await RenderCodeFrequencyChart();
     }
+
     _isLoading = false;
   }
 
   private async Task LoadCodeFrequencyData()
   {
-    if (await GithubHttpClient.GetCodeFrequencyStatsAsync(RepoName) is { } result
-    && result.IsSuccess
-    && result.Value is not null)
+    if (await GithubHttpClient.GetCodeFrequencyStatsAsync(RepoName) is { IsSuccess: true, Value: not null } result)
     {
       _codeFrequencyData = result.Value;
     }
@@ -64,7 +63,7 @@
   private async Task RenderCodeFrequencyChart()
   {
     var weeks = _codeFrequencyData.Select(data =>
-    DateTimeOffset.FromUnixTimeSeconds(data[0]).ToString("yyyy-MM-dd")).ToArray();
+      DateTimeOffset.FromUnixTimeSeconds(data[0]).ToString("yyyy-MM-dd")).ToArray();
     var additions = _codeFrequencyData.Select(data => data[1]).ToArray();
     var deletions = _codeFrequencyData.Select(data => -data[2]).ToArray();
     await JSRuntime.InvokeVoidAsync("renderCodeFrequencyChart", weeks, additions, deletions);

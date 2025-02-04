@@ -7,14 +7,14 @@ namespace MyProfile.Components.Projects;
 public partial class DisplayProjects : ComponentBase
 {
   private readonly IGithubHttpClient _githubClient;
-  private readonly NavigationService _naviagtionService;
+  private readonly NavigationService _navigationService;
   private bool _isApiError;
   private IReadOnlyList<GithubRepo>? _githubProjects = [];
   
   public DisplayProjects(IGithubHttpClient githubClient, NavigationService navigationService)
   {
     _githubClient = githubClient;
-    _naviagtionService = navigationService;
+    _navigationService = navigationService;
   }
 
   protected override async Task OnInitializedAsync()
@@ -26,7 +26,7 @@ public partial class DisplayProjects : ComponentBase
     }
   }
 
-  private void NavigateToProjectDetails(int id) => _naviagtionService.NavigateToProjectDetails(id);
+  private void NavigateToProjectDetails(int id) => _navigationService.NavigateToProjectDetails(id);
   
 }
 
