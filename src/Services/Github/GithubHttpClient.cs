@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using MyProfile.Models;
 using Obaki.LocalStorageCache;
+using Polly;
 
 namespace MyProfile.Services.Github;
 
@@ -106,22 +107,15 @@ internal sealed class GithubHttpClient : IGithubHttpClient
     {
         var cacheKey = $"{CodeFrequencyEndpoint}-{repoName}";
         var endpoint = $"{RepoEndpoint}/{repoName}/stats/code_frequency";
-        const int maxAttempts = 3;
-        
-         Result<IReadOnlyList<int[]>>? result = null;
-         
-         // We will try to fetch the data 3 times, allowing GitHub to process the stats data for the first time
-        for (int attempt = 1; attempt <= maxAttempts; attempt++)
-        {
-            result = await FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1));
 
-            if (result is { IsSuccess: true, Value: not null })
-                break;
+        // We will try to fetch the data 3 times, allowing GitHub to process the stats data for the first time
+        var policy = Policy
+            .HandleResult<Result<IReadOnlyList<int[]>>>(result => result is null || result.IsFailure || result.Value is null)
+            .WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2));
 
-            if (attempt < maxAttempts)
-                await Task.Delay(TimeSpan.FromSeconds(2));
-        }
-        
+        var result = await policy.ExecuteAsync(() =>
+            FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1)));
+
         if (result is null || result.IsFailure || result.Value is null)
         {
             return Result.Fail<IReadOnlyList<int[]>>(Error.EmptyValue);
@@ -129,6 +123,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
 
         return result;
     }
+
 
     public async Task<Result<Dictionary<string, int>>> GetLanguagesUsedAsync(string repoName)
     {
