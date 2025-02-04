@@ -111,7 +111,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         // We will try to fetch the data 3 times, allowing GitHub to process the stats data for the first time
         var policy = Policy
             .HandleResult<Result<IReadOnlyList<int[]>>>(result => result is null || result.IsFailure || result.Value is null)
-            .WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2));
+            .WaitAndRetryAsync(5, _ => TimeSpan.FromSeconds(5));
 
         var result = await policy.ExecuteAsync(() =>
             FetchAndCacheAsync<IReadOnlyList<int[]>>(cacheKey, endpoint, TimeSpan.FromHours(1)));
