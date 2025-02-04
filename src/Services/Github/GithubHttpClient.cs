@@ -108,7 +108,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         var cacheKey = $"{CodeFrequencyEndpoint}-{repoName}";
         var endpoint = $"{RepoEndpoint}/{repoName}/stats/code_frequency";
 
-        // We will try to fetch the data 3 times, allowing GitHub to process the stats data for the first time
+        // We will try to fetch the data 5 times, allowing GitHub to process the stats data for the first time
         var policy = Policy
             .HandleResult<Result<IReadOnlyList<int[]>>>(result => result is null || result.IsFailure || result.Value is null)
             .WaitAndRetryAsync(5, _ => TimeSpan.FromSeconds(5));
