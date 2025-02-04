@@ -3,14 +3,7 @@
 <div class="my-4">
   <h3 class="text-sm font-bold text-[#c9d1d9] mb-2">Code Frequency</h3>
 
-  @if (_isLoading)
-  {
-    <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4 text-center">
-      <p class="text-[#8b949e] text-sm animate-pulse">Loading chart..</p>
-    </div>
-  
-  }
-  else if (_codeFrequencyData.Any())
+  @if (_codeFrequencyData.Any())
   {
     <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
       <canvas id="codeFrequencyChart" width="400" height="200"></canvas>
@@ -19,19 +12,17 @@
   else
   {
     <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4 text-center">
-      <p class="text-[#cf222e]">No data available.</p>
+      <p class="text-[#8b949e] text-sm animate-pulse">Loading chart..</p>
     </div>
   }
 
- 
+
 </div>
 
 @code {
   [Parameter] public string RepoName { get; set; } = string.Empty;
 
   private IReadOnlyList<int[]> _codeFrequencyData = [];
-
-  private bool _isLoading = true;
 
   protected override async Task OnParametersSetAsync()
   {
@@ -44,8 +35,6 @@
     {
       await RenderCodeFrequencyChart();
     }
-
-    _isLoading = false;
   }
 
   private async Task LoadCodeFrequencyData()
@@ -54,16 +43,12 @@
     {
       _codeFrequencyData = result.Value;
     }
-    else
-    {
-      _codeFrequencyData = [];
-    }
   }
 
   private async Task RenderCodeFrequencyChart()
   {
     var weeks = _codeFrequencyData.Select(data =>
-      DateTimeOffset.FromUnixTimeSeconds(data[0]).ToString("yyyy-MM-dd")).ToArray();
+    DateTimeOffset.FromUnixTimeSeconds(data[0]).ToString("yyyy-MM-dd")).ToArray();
     var additions = _codeFrequencyData.Select(data => data[1]).ToArray();
     var deletions = _codeFrequencyData.Select(data => -data[2]).ToArray();
     await JSRuntime.InvokeVoidAsync("renderCodeFrequencyChart", weeks, additions, deletions);
