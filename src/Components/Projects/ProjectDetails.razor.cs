@@ -25,7 +25,7 @@ public partial class ProjectDetails : ComponentBase
 
   protected override async Task OnParametersSetAsync()
   {
-    if (await _githubClient.GetReposToBeShown() is { } gitHubRepos)
+    if (await _githubClient.GetReposToBeShownAsync() is { } gitHubRepos)
     {
       _repoData = gitHubRepos.Value?.FirstOrDefault(x => x.Id == Id);
     }

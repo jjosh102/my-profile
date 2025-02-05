@@ -9,14 +9,16 @@ namespace MyProfile.Services.Github;
 
 internal sealed class GithubHttpClient : IGithubHttpClient
 {
-    public const string BaseAddress = "https://api.github.com";
-    public const string CommitsEndpoint = "commits";
-    public const string CodeFrequencyEndpoint = "code-frequency";
-    public const string LanguagesEndpoint = "languages";
-    public const string ProxyApi = "https://obaki-core.onrender.com/api/v1/github-proxy";
-    public const string ReposEndpoint = "repos";
-    public const string UserReposEndpoint = "users/jjosh102/repos";
-    public const string RepoEndpoint = "repos/jjosh102";
+    private const string BaseAddress = "https://api.github.com";
+    private const string ProxyBaseAddress = "https://obaki-core.onrender.com";
+    private const string CommitsEndpoint = "commits";
+    private const string CodeFrequencyEndpoint = "code-frequency";
+    private const string LanguagesEndpoint = "languages";
+    private const string ProxyApi = "https://obaki-core.onrender.com/api/v1/github-proxy";
+    private const string ReposEndpoint = "repos";
+    private const string UserReposEndpoint = "users/jjosh102/repos";
+    private const string RepoEndpoint = "repos/jjosh102";
+    private const string ContributionsEndpoint = "api/v1/github-contributions";
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageCache _localStorageCache;
 
@@ -26,7 +28,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         _localStorageCache = localStorageCache;
     }
 
-    private async Task<Result<T>> FetchAndCacheAsync<T>(string cacheKey, string endpoint, TimeSpan cacheDuration)
+    private async Task<Result<T>> FetchAndCacheAsync<T>(string cacheKey, string endpoint, TimeSpan cacheDuration, bool useProxy = false)
     {
         try
         {
@@ -35,14 +37,15 @@ internal sealed class GithubHttpClient : IGithubHttpClient
                 cacheDuration,
                 async () =>
                 {
-                    var url = $"{BaseAddress}/{endpoint}";
+                    var url = $"{(useProxy ? ProxyBaseAddress : BaseAddress)}/{endpoint}";
                     var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
                     // If the rate limit is exceeded, use the proxy API to fetch the data
                     // This will take a while since the proxy API has a chance to wait for a cold start
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden &&
                          response.Headers.Contains("X-RateLimit-Remaining") &&
-                         response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0")
+                         response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0" &&
+                         !useProxy)
                     {
                         var proxyUrl = $"{ProxyApi}?url={url}";
                         response = await _httpClient.GetAsync(proxyUrl).ConfigureAwait(false);
@@ -90,7 +93,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         return Result.Success<IReadOnlyList<CommitDisplay>>(commits);
     }
 
-    public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShown()
+    public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShownAsync()
     {
         var result = await FetchAndCacheAsync<IReadOnlyList<GithubRepo>>(ReposEndpoint,
             UserReposEndpoint, TimeSpan.FromHours(1));
@@ -111,7 +114,7 @@ internal sealed class GithubHttpClient : IGithubHttpClient
 
         // We will try to fetch the data 5 times, allowing GitHub to process the stats data for the first time
         // The delay will start with 3 seconds and increase linearly with each retry
-        var delay = Backoff.LinearBackoff(TimeSpan.FromSeconds(3),5);
+        var delay = Backoff.LinearBackoff(TimeSpan.FromSeconds(3), 5);
 
         var policy = Policy
             .HandleResult<Result<IReadOnlyList<int[]>>>(result => result is null || result.IsFailure || result.Value is null)
@@ -128,11 +131,16 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         return result;
     }
 
-
     public async Task<Result<Dictionary<string, int>>> GetLanguagesUsedAsync(string repoName)
     {
         var cacheKey = $"{LanguagesEndpoint}-{repoName}";
         var endpoint = $"{RepoEndpoint}/{repoName}/{LanguagesEndpoint}";
-        return await FetchAndCacheAsync<Dictionary<string, int>>(cacheKey, endpoint, TimeSpan.FromHours(1));
+        return await FetchAndCacheAsync<Dictionary<string, int>>(cacheKey, endpoint, TimeSpan.FromDays(30));
+    }
+
+    public async Task<Result<GithubContributions>> GetContributionsAsync()
+    {
+        var cacheKey = $"contributions-data";
+        return await FetchAndCacheAsync<GithubContributions>(cacheKey, ContributionsEndpoint, TimeSpan.FromDays(1), true);
     }
 }

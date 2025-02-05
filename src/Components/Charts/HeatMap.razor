@@ -1,0 +1,43 @@
+@inject IGithubHttpClient GithubHttpClient
+@inject IJSRuntime JSRuntime
+
+@if (_contributions.Any())
+{
+  <div class="my-4">
+    <canvas id="contributionHeatmap" width="1000" height="200"></canvas>
+  </div>
+}
+else
+{
+  <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4 text-center">
+    <p class="text-[#8b949e] text-sm animate-pulse">Loading contributions..</p>
+  </div>
+}
+
+@code {
+
+  private IReadOnlyList<Contribution> _contributions = [];
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (await GithubHttpClient.GetContributionsAsync() is { IsSuccess: true, Value: not null } result)
+    {
+      _contributions = result.Value.Contributions;
+    }
+  }
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (_contributions.Any())
+    {
+      await RenderHeatmap();
+    }
+  }
+
+  private async Task RenderHeatmap()
+  {
+    var dates = _contributions.Select(c => c.Date.ToString("yyyy-MM-dd")).ToArray();
+    var counts = _contributions.Select(c => c.ContributionCount).ToArray();
+    await JSRuntime.InvokeVoidAsync("renderContributionHeatmap", dates, counts);
+  }
+
+}

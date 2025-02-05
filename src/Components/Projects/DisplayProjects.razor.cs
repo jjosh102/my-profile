@@ -18,7 +18,7 @@ public partial class DisplayProjects : ComponentBase
 
   protected override async Task OnInitializedAsync()
   {
-    if (await _githubClient.GetReposToBeShown() is { } gitHubRepos)
+    if (await _githubClient.GetReposToBeShownAsync() is { } gitHubRepos)
     {
       _githubProjects = gitHubRepos.Value;
     }
