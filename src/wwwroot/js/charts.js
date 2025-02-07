@@ -181,8 +181,8 @@ window.renderContributionHeatmap = (dates, counts) => {
                             text: '',
                             fillStyle: color,
                             strokeStyle: '#0d1117',
-                            lineWidth: 2,
-                            borderRadius: 2
+                            lineWidth: 0,
+                            borderRadius: 0
                         })),
                         {
                             text: 'More',

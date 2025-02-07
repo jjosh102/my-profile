@@ -1,21 +1,21 @@
 @page "/activity-timeline/{repoName}"
 @inject IGithubHttpClient GithubHttpClient
 
-<div class="my-4 mx-auto ">
-  <h3 class="text-sm font-bold text-[#c9d1d9] mb-2">Activity Timeline</h3>
+<div class="my-4 mx-auto dark:bg-[#0D1117] bg-white">
+  <h3 class="text-sm font-bold text-gray-900 dark:text-[#c9d1d9] mb-2">Activity Timeline</h3>
   <div class="space-y-6">
     @if (_isLoading)
     {
       <div class="space-y-4">
         @for (int i = 0; i < 3; i++)
         {
-          <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-4">
+          <div class="bg-white dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363d] shadow-sm rounded-lg p-4">
             <div class="animate-pulse flex space-x-4">
-              <div class="rounded-full bg-[#30363d] h-10 w-10"></div>
+              <div class="rounded-full bg-gray-200 dark:bg-[#30363d] h-10 w-10"></div>
               <div class="flex-1 space-y-2">
-                <div class="h-4 bg-[#30363d] rounded-sm w-3/4"></div>
-                <div class="h-4 bg-[#30363d] rounded"></div>
-                <div class="h-4 bg-[#30363d] rounded-sm w-1/2"></div>
+                <div class="h-4 bg-gray-200 dark:bg-[#30363d] rounded-sm w-3/4"></div>
+                <div class="h-4 bg-gray-200 dark:bg-[#30363d] rounded"></div>
+                <div class="h-4 bg-gray-200 dark:bg-[#30363d] rounded-sm w-1/2"></div>
               </div>
             </div>
           </div>
@@ -27,33 +27,28 @@
       <div class="space-y-4">
         @foreach (var commit in _visibleCommits)
         {
-          <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-4">
-
+          <div class="bg-white dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363d] shadow-sm rounded-lg p-4">
             <div class="flex flex-col md:flex-row justify-between items-start space-y-3 md:space-y-0">
-
               <div class="flex items-center space-x-3">
                 <img class="w-8 h-8 rounded-full" src="@commit.AuthorAvatarUrl" alt="@commit.AuthorName" />
                 <div>
-                  <p class="text-sm font-semibold text-[#c9d1d9]">@commit.AuthorName</p>
-                  <p class="text-xs text-gray-400">@commit.CommitDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-[#c9d1d9]">@commit.AuthorName</p>
+                  <p class="text-xs text-gray-600 dark:text-gray-400">@commit.CommitDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
                 </div>
               </div>
-
-
               <a href="@commit.CommitUrl" target="_blank" rel="noopener noreferrer"
-                class="text-sm text-[#58a6ff] hover:underline whitespace-nowrap">
+                class="text-sm text-blue-600 dark:text-[#58a6ff] hover:underline whitespace-nowrap">
                 View Commit
               </a>
             </div>
-
-            <p class="mt-2 text-sm text-gray-400">@commit.Message</p>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">@commit.Message</p>
           </div>
         }
 
         @if (_commits.Count > 5)
         {
           <button @onclick="ToggleExpand"
-            class="w-full bg-[#21262d] text-[#c9d1d9] border border-[#30363d] px-4 py-2 rounded-md hover:bg-[#30363d] transition-colors duration-200">
+            class="w-full bg-gray-100 dark:bg-[#21262d] text-gray-900 dark:text-[#c9d1d9] border border-gray-200 dark:border-[#30363d] px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-[#30363d] transition-colors duration-200">
             @(_showAll ? "Show Less" : "Show More")
           </button>
         }
@@ -61,8 +56,8 @@
     }
     else
     {
-      <div class="bg-[#161b22] border border-[#30363d] shadow-sm rounded-lg p-4 text-center">
-        <p class="text-[#cf222e]">No commits found for this repository.</p>
+      <div class="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-[#30363d] shadow-sm rounded-lg p-4 text-center">
+        <p class="text-red-600 dark:text-[#cf222e]">No commits found for this repository.</p>
       </div>
     }
   </div>
