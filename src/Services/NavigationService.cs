@@ -12,7 +12,7 @@ public class NavigationService
         _baseUrl = _navigationManager.BaseUri.Contains("github.io") ? "/my-profile" : "";
     }
 
-    public void GoBack()
+    public void GoToHome()
     {
         NavigateTo("/");
     }

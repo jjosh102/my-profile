@@ -4,7 +4,7 @@
 <div class="container mx-auto p-4 max-w-3xl">
     <div class="space-y-6">
         <div class="flex items-center space-x-6">
-            <button @onclick="GoBack"
+            <button @onclick="GoToHome"
                 class="flex items-center space-x-2 bg-[#21262d] text-[#c9d1d9] border border-[#30363d] px-3 py-1.5 rounded-md hover:bg-[#30363d] transition-colors duration-200">
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -17,7 +17,7 @@
         </div>
         @if (_repoData is not null)
         {
-            <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4">
+            <div class="bg-[#161b22] border border-[#30363d] shadow-sm rounded-lg p-4">
                 <div class="flex flex-col md:flex-row justify-between items-start mb-3">
                     <span class="text-lg font-bold text-[#58a6ff] mb-2 md:mb-0">@_repoData.Name</span>
                     <div class="flex shrink-0 space-x-2">
@@ -48,26 +48,26 @@
                 <p class="text-gray-400 text-sm">@_repoData.Description</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-3 my-3">
-                    <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-3 text-center">
+                    <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-3 text-center">
                         <h3 class="text-md font-semibold text-[#c9d1d9]">Stargazers</h3>
                         <p class="text-gray-400 text-xl mt-1">@_repoData.StargazersCount</p>
                     </div>
-                    <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-3 text-center">
+                    <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-3 text-center">
                         <h3 class="text-md font-semibold text-[#c9d1d9]">Forks</h3>
                         <p class="text-gray-400 text-xl mt-1">@_repoData.ForksCount</p>
                     </div>
-                    <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-3 text-center">
+                    <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-3 text-center">
                         <h3 class="text-md font-semibold text-[#c9d1d9]">Watchers</h3>
                         <p class="text-gray-400 text-xl mt-1">@_repoData.WatchersCount</p>
                     </div>
-                    <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-3 text-center">
+                    <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-3 text-center">
                         <h3 class="text-md font-semibold text-[#c9d1d9]">Open Issues</h3>
                         <p class="text-gray-400 text-xl mt-1">@_repoData.OpenIssuesCount</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
-                    <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-3">
+                    <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-3">
                         <h3 class="text-lg font-semibold text-[#c9d1d9] mb-3">Repository Details</h3>
                         <div class="space-y-1">
                             <div class="flex justify-between">
@@ -93,7 +93,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-[#0D1117] border border-[#30363d] shadow rounded-lg p-3">
+                    <div class="bg-[#0D1117] border border-[#30363d] shadow-sm rounded-lg p-3">
                         <h3 class="text-lg font-semibold text-[#c9d1d9] mb-3">Activity Timeline</h3>
                         <div class="space-y-2">
                             <div class="flex items-center text-sm">
@@ -122,7 +122,7 @@
         }
         else
         {
-            <div class="bg-[#161b22] border border-[#30363d] shadow rounded-lg p-4 text-center">
+            <div class="bg-[#161b22] border border-[#30363d] shadow-sm rounded-lg p-4 text-center">
                 <p class="text-[#8b949e] text-sm animate-pulse">Loading projects..</p>
             </div>
         }

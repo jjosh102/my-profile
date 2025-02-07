@@ -31,5 +31,5 @@ public partial class ProjectDetails : ComponentBase
         }
     }
 
-    private void GoBack() => _navigationService.GoBack();
+    private void GoToHome() => _navigationService.GoToHome();
 }
