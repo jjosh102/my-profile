@@ -1,4 +1,4 @@
-﻿namespace  MyProfile.Shared.Extensions;
+﻿namespace MyProfile.Shared.Extensions;
 public static class FormatterExtensions
 {
     private static readonly Dictionary<string, string> LanguageColors = new(StringComparer.OrdinalIgnoreCase)
@@ -95,9 +95,9 @@ public static class FormatterExtensions
             return $"{(sizeInKb / (1024.0 * 1024.0)):F1} GB";
     }
 
- 
+
     public static string FormatDate(this DateTime date) => date.ToString("MMMM dd, yyyy");
- 
+
     public static string FormatTimeAgo(this DateTime date)
     {
         var timeSpan = DateTime.UtcNow - date;
