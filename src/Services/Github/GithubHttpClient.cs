@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
 using System.Text.Json;
+using Blazored.LocalStorage;
+using BrowserCache.Extensions.LocalStorage;
 using MyProfile.Models;
-using Obaki.LocalStorageCache;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
-
 namespace MyProfile.Services.Github;
 
 internal sealed class GithubHttpClient : IGithubHttpClient
@@ -20,9 +20,9 @@ internal sealed class GithubHttpClient : IGithubHttpClient
     private const string RepoEndpoint = "repos/jjosh102";
     private const string ContributionsEndpoint = "api/v1/github-contributions";
     private readonly HttpClient _httpClient;
-    private readonly ILocalStorageCache _localStorageCache;
+    private readonly ILocalStorageService _localStorageCache;
 
-    public GithubHttpClient(HttpClient httpClient, ILocalStorageCache localStorageCache)
+    public GithubHttpClient(HttpClient httpClient, ILocalStorageService localStorageCache)
     {
         _httpClient = httpClient;
         _localStorageCache = localStorageCache;
