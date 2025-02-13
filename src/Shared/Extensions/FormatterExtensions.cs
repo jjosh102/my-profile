@@ -90,9 +90,9 @@ public static class FormatterExtensions
         if (sizeInKb < 1024)
             return $"{sizeInKb} KB";
         else if (sizeInKb < 1024 * 1024)
-            return $"{(sizeInKb / 1024.0):F1} MB";
+            return $"{sizeInKb / 1024.0:F1} MB";
         else
-            return $"{(sizeInKb / (1024.0 * 1024.0)):F1} GB";
+            return $"{sizeInKb / 1024.0 * 1024.0:F1} GB";
     }
 
 
