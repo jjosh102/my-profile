@@ -4,7 +4,6 @@ public class Error : IEquatable<Error>
 {
     public static readonly Error None = new(string.Empty, string.Empty);
     public static readonly Error EmptyValue = new(nameof(Error), "Result is empty.");
-    // todo: create  a separate class
     public static Error HttpError(string code) => new($"HttpError - {code}", "Result encountered a Http error");
     public Error(string code, string messaage)
     {
@@ -18,28 +17,14 @@ public class Error : IEquatable<Error>
 
     public bool Equals(Error? other)
     {
-        if (other is null)
-            return false;
-
-        if (other.GetType() != GetType())
-            return false;
-
-        return true;
+        return other is not null && other.GetType() == GetType();
     }
 
     public override bool Equals(object? obj)
     {
-        if (obj is null)
-            return false;
-
-        if (obj.GetType() != GetType())
-            return false;
-
-        if (obj is not Error)
-            return false;
-
-        return true;
+        return obj is not null && obj.GetType() == GetType() && obj is Error;
     }
+
     public static bool operator ==(Error? first, Error? second)
          => first is not null && second is not null && first.Equals(second);
 
@@ -48,7 +33,6 @@ public class Error : IEquatable<Error>
 
     public static implicit operator string(Error error)
          => error.Message;
-
 
     public override int GetHashCode()
     {

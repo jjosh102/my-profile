@@ -11,13 +11,18 @@ public class Result
         IsSuccess = true;
         Error = string.Empty;
     }
+    
     public Result(bool isSuccess, string error)
     {
         if (isSuccess && error != string.Empty)
+        {
             throw new InvalidOperationException();
+        }
 
         if (!isSuccess && error == string.Empty)
+        {
             throw new InvalidOperationException();
+        }
 
         IsSuccess = isSuccess;
         Error = error;
@@ -42,16 +47,15 @@ public class Result
     {
         return new Result<T>(value, true, string.Empty);
     }
-
 }
 
 public class Result<TValue> : Result
 {
     private readonly TValue? _value;
-    public Result(TValue? value, bool isSuccess, string error) : base(isSuccess, error) => _value = value;
+    public Result(TValue? value, bool isSuccess, string error)
+        : base(isSuccess, error) => _value = value;
 
     public TValue? Value => _value!;
 
     public static implicit operator Result<TValue>(TValue value) => new(value, true, string.Empty);
-
 }

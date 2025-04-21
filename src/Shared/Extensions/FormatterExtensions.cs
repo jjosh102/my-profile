@@ -48,15 +48,15 @@ public static class FormatterExtensions
 
         if (totalSeconds < secondsInMinute)
         {
-            return $"{(int)totalSeconds} second{(totalSeconds > 1 ? "s" : "")} ago";
+            return $"{(int)totalSeconds} second{(totalSeconds > 1 ? "s" : string.Empty)} ago";
         }
         else if (totalMinutes < minutesInHour)
         {
-            return $"{(int)totalMinutes} minute{(totalMinutes > 1 ? "s" : "")} ago";
+            return $"{(int)totalMinutes} minute{(totalMinutes > 1 ? "s" : string.Empty)} ago";
         }
         else if (totalHours < hoursInDay)
         {
-            return $"{(int)totalHours} hour{(totalHours > 1 ? "s" : "")} ago";
+            return $"{(int)totalHours} hour{(totalHours > 1 ? "s" : string.Empty)} ago";
         }
         else if (totalDays < 2)
         {
@@ -64,7 +64,7 @@ public static class FormatterExtensions
         }
         else if (totalDays < daysInMonth)
         {
-            return $"{(int)totalDays} day{(totalDays > 1 ? "s" : "")} ago";
+            return $"{(int)totalDays} day{(totalDays > 1 ? "s" : string.Empty)} ago";
         }
         else if (totalDays < daysInYear)
         {
@@ -82,19 +82,25 @@ public static class FormatterExtensions
         {
             return "#cccccc";
         }
+        
         return LanguageColors.TryGetValue(language, out var color) ? color : "#cccccc";
     }
 
     public static string FormatSize(this int sizeInKb)
     {
         if (sizeInKb < 1024)
+        {
             return $"{sizeInKb} KB";
+        }
         else if (sizeInKb < 1024 * 1024)
+        {
             return $"{sizeInKb / 1024.0:F1} MB";
+        }
         else
+        {
             return $"{sizeInKb / 1024.0 * 1024.0:F1} GB";
+        }
     }
-
 
     public static string FormatDate(this DateTime date) => date.ToString("MMMM dd, yyyy");
 
@@ -103,16 +109,25 @@ public static class FormatterExtensions
         var timeSpan = DateTime.UtcNow - date;
 
         if (timeSpan.TotalDays > 365)
+        {
             return $"{(int)(timeSpan.TotalDays / 365)} years ago";
-        if (timeSpan.TotalDays > 30)
-            return $"{(int)(timeSpan.TotalDays / 30)} months ago";
-        if (timeSpan.TotalDays > 1)
-            return $"{(int)timeSpan.TotalDays} days ago";
-        if (timeSpan.TotalHours > 1)
-            return $"{(int)timeSpan.TotalHours} hours ago";
-        if (timeSpan.TotalMinutes > 1)
-            return $"{(int)timeSpan.TotalMinutes} minutes ago";
+        }
 
-        return "just now";
+        if (timeSpan.TotalDays > 30)
+        {
+            return $"{(int)(timeSpan.TotalDays / 30)} months ago";
+        }
+
+        if (timeSpan.TotalDays > 1)
+        {
+            return $"{(int)timeSpan.TotalDays} days ago";
+        }
+
+        if (timeSpan.TotalHours > 1)
+        {
+            return $"{(int)timeSpan.TotalHours} hours ago";
+        }
+
+        return timeSpan.TotalMinutes > 1 ? $"{(int)timeSpan.TotalMinutes} minutes ago" : "just now";
     }
 }

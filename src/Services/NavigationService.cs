@@ -9,7 +9,7 @@ public class NavigationService
     public NavigationService(NavigationManager navigationManager)
     {
         _navigationManager = navigationManager;
-        _baseUrl = _navigationManager.BaseUri.Contains("github.io") ? "/my-profile" : "";
+        _baseUrl = _navigationManager.BaseUri.Contains("github.io") ? "/my-profile" : string.Empty;
     }
 
     public void GoToHome()
@@ -30,7 +30,6 @@ public class NavigationService
 
     public string GetPath(string relativePath)
     {
-
         relativePath = relativePath.TrimStart('/');
         return $"{_baseUrl}/{relativePath}";
     }

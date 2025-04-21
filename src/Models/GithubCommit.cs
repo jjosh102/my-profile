@@ -125,8 +125,6 @@ public record Author
     public bool SiteAdmin { get; init; }
 }
 
-
-
 public record GithubCommit
 {
     [JsonPropertyName("sha")]

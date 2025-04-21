@@ -1,11 +1,11 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MyProfile;
+using MyProfile.Services;
 using MyProfile.Services.Github;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
-using MyProfile.Services;
-using Blazored.LocalStorage;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

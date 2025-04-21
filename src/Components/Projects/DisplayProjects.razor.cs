@@ -25,7 +25,4 @@ public partial class DisplayProjects : ComponentBase
     }
 
     private void NavigateToProjectDetails(int id) => _navigationService.NavigateToProjectDetails(id);
-
 }
-
-

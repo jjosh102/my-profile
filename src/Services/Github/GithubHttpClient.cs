@@ -28,48 +28,6 @@ internal sealed class GithubHttpClient : IGithubHttpClient
         _localStorageCache = localStorageCache;
     }
 
-    private async Task<Result<T>> FetchAndCacheAsync<T>(string cacheKey, string endpoint, TimeSpan cacheDuration, bool useProxy = false)
-    {
-        try
-        {
-            return await _localStorageCache.GetOrCreateCacheAsync(
-                cacheKey,
-                cacheDuration,
-                async () =>
-                {
-                    var url = $"{(useProxy ? ProxyBaseAddress : BaseAddress)}/{endpoint}";
-                    var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
-
-                    // If the rate limit is exceeded, use the proxy API to fetch the data
-                    // This will take a while since the proxy API has a chance to wait for a cold start
-                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden &&
-                         response.Headers.Contains("X-RateLimit-Remaining") &&
-                         response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0" &&
-                         !useProxy)
-                    {
-                        var proxyUrl = $"{ProxyApi}?url={url}";
-                        response = await _httpClient.GetAsync(proxyUrl).ConfigureAwait(false);
-                    }
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return Result.Fail<T>(Error.HttpError(response.StatusCode.ToString()));
-                    }
-
-                    var data = await response.Content.ReadFromJsonAsync<T>().ConfigureAwait(false);
-                    return data is null ? Result.Fail<T>(Error.EmptyValue) : Result.Success(data);
-                }) ?? Result.Fail<T>(Error.EmptyValue);
-        }
-        catch (JsonException)
-        {
-            return Result.Fail<T>(Error.EmptyValue);
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail<T>(Error.HttpError(ex.Message));
-        }
-    }
-
     public async Task<Result<IReadOnlyList<CommitDisplay>>> GetCommitsForRepoAsync(string repoName)
     {
         var cacheKey = $"{CommitsEndpoint}-{repoName}";
@@ -95,8 +53,10 @@ internal sealed class GithubHttpClient : IGithubHttpClient
 
     public async Task<Result<IReadOnlyList<GithubRepo>>> GetReposToBeShownAsync()
     {
-        var result = await FetchAndCacheAsync<IReadOnlyList<GithubRepo>>(ReposEndpoint,
-            UserReposEndpoint, TimeSpan.FromHours(1));
+        var result = await FetchAndCacheAsync<IReadOnlyList<GithubRepo>>(
+            ReposEndpoint,
+            UserReposEndpoint,
+            TimeSpan.FromHours(1));
 
         if (result.IsFailure || result.Value is null)
         {
@@ -142,5 +102,47 @@ internal sealed class GithubHttpClient : IGithubHttpClient
     {
         var cacheKey = $"contributions-data";
         return await FetchAndCacheAsync<GithubContributions>(cacheKey, ContributionsEndpoint, TimeSpan.FromDays(1), true);
+    }
+
+    private async Task<Result<T>> FetchAndCacheAsync<T>(string cacheKey, string endpoint, TimeSpan cacheDuration, bool useProxy = false)
+    {
+        try
+        {
+            return await _localStorageCache.GetOrCreateCacheAsync(
+                cacheKey,
+                cacheDuration,
+                async () =>
+                {
+                    var url = $"{(useProxy ? ProxyBaseAddress : BaseAddress)}/{endpoint}";
+                    var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
+
+                    // If the rate limit is exceeded, use the proxy API to fetch the data
+                    // This will take a while since the proxy API has a chance to wait for a cold start
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden &&
+                         response.Headers.Contains("X-RateLimit-Remaining") &&
+                         response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() == "0" &&
+                         !useProxy)
+                    {
+                        var proxyUrl = $"{ProxyApi}?url={url}";
+                        response = await _httpClient.GetAsync(proxyUrl).ConfigureAwait(false);
+                    }
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return Result.Fail<T>(Error.HttpError(response.StatusCode.ToString()));
+                    }
+
+                    var data = await response.Content.ReadFromJsonAsync<T>().ConfigureAwait(false);
+                    return data is null ? Result.Fail<T>(Error.EmptyValue) : Result.Success(data);
+                }) ?? Result.Fail<T>(Error.EmptyValue);
+        }
+        catch (JsonException)
+        {
+            return Result.Fail<T>(Error.EmptyValue);
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail<T>(Error.HttpError(ex.Message));
+        }
     }
 }
