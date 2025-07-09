@@ -34,7 +34,7 @@
                 <img class="w-8 h-8 rounded-full" src="@commit.AuthorAvatarUrl" alt="@commit.AuthorName" />
                 <div>
                   <p class="text-sm font-semibold text-gray-900 dark:text-[#c9d1d9]">@commit.AuthorName</p>
-                  <p class="text-xs text-gray-600 dark:text-gray-400">@commit.CommitDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                  <p class="text-xs text-gray-600 dark:text-gray-400">@commit.CommitDate.GetProjectHistoryTimeAgo()</p>
                 </div>
               </div>
 

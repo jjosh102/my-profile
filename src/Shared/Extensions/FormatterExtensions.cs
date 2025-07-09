@@ -1,4 +1,5 @@
 ﻿namespace MyProfile.Shared.Extensions;
+
 public static class FormatterExtensions
 {
     private static readonly Dictionary<string, string> LanguageColors = new(StringComparer.OrdinalIgnoreCase)
@@ -76,13 +77,53 @@ public static class FormatterExtensions
         }
     }
 
+    public static string GetProjectHistoryTimeAgo(this DateTime lastModified)
+    {
+        var timeDifference = DateTime.UtcNow - lastModified;
+
+        if (timeDifference.TotalSeconds < 60)
+        {
+            return "just now";
+        }
+
+        if (timeDifference.TotalMinutes < 60)
+        {
+            return $"last modified {Math.Floor(timeDifference.TotalMinutes)} minute{(timeDifference.TotalMinutes >= 2 ? "s" : string.Empty)} ago";
+        }
+
+        if (timeDifference.TotalHours < 24)
+        {
+            return $"last modified {Math.Floor(timeDifference.TotalHours)} hour{(timeDifference.TotalHours >= 2 ? "s" : string.Empty)} ago";
+        }
+        
+        if (timeDifference.TotalDays < 7)
+        {
+            return $"last modified {Math.Floor(timeDifference.TotalDays)} day{(timeDifference.TotalDays >= 2 ? "s" : string.Empty)} ago";
+        }
+
+        if (timeDifference.TotalDays < 30)
+        {
+            int weeks = (int)Math.Floor(timeDifference.TotalDays / 7);
+            return $"last modified {weeks} week{(weeks > 1 ? "s" : string.Empty)} ago";
+        }
+
+        if (timeDifference.TotalDays < 365)
+        {
+            int months = (int)Math.Floor(timeDifference.TotalDays / 30);
+            return $"last modified {months} month{(months > 1 ? "s" : string.Empty)} ago";
+        }
+        
+        int years = (int)Math.Floor(timeDifference.TotalDays / 365);
+        return $"last modified {years} year{(years > 1 ? "s" : string.Empty)} ago";
+    }
+
     public static string GetLanguageBackgroundColor(this string language)
     {
         if (string.IsNullOrWhiteSpace(language))
         {
             return "#cccccc";
         }
-        
+
         return LanguageColors.TryGetValue(language, out var color) ? color : "#cccccc";
     }
 
